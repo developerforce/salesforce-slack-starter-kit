@@ -1,0 +1,27 @@
+_metadata:
+  major_version: 1
+  minor_version: 1
+display_information:
+  name: Salesforce Slack Starter App
+features:
+  bot_user:
+    display_name: Salesforce Slack Starter App
+    always_online: true
+  shortcuts:
+    - name: Whoami
+      type: global
+      callback_id: who_am_i
+      description: shows Salesforce org details
+oauth_config:
+  scopes:
+    bot:
+      - chat:write
+      - chat:write.public
+      - commands
+settings:
+  interactivity:
+    is_enabled: true
+    request_url: https://heroku-app.herokuapp.com/slack/events
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
