@@ -1,5 +1,6 @@
 const Salesforce = require('../../salesforcelib/connect');
 const config = require('../../config/config');
+const { whoamiresponse } = require('../../user-interface/modals');
 
 const sf = new Salesforce(config.salesforce);
 
@@ -11,26 +12,7 @@ const whoamiCallback = async ({ shortcut, ack, client }) => {
     // Call the views.open method using one of the built-in WebClients
     const result = await client.views.open({
       trigger_id: shortcut.trigger_id,
-      view: {
-        type: "modal",
-        title: {
-          type: "plain_text",
-          text: "Salesforce Slack App"
-        },
-        close: {
-          type: "plain_text",
-          text: "Close"
-        },
-        blocks: [
-          {
-            type: "section",
-            text: {
-              type: "mrkdwn",
-              text: `Successfully connected to salesforce instance ${conn.instanceUrl}. Currently authenticated with user ${currentuser.username}`
-            }
-          }
-        ]
-      }
+      view: whoamiresponse(conn.instanceUrl, currentuser.username)
     });
 
   } catch (error) {
