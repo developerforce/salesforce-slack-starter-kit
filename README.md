@@ -64,11 +64,28 @@ This is the last step, you will need to enter the corrent Heroku Instance url in
 
 - To enter this value open your apps configuration page from [this list](https://api.slack.com/apps), click *App Manifest*. Find the `request_url` in the manifest and modify it to replace `heroku-app` with your actual heroku domain name. Note at the end of this step your url should look like `https://<heroku-domain>.herokuapp.com/slack/events`
 
+### Directory Structure
+```bash
+├── force-app             # Folder that holds Salesforce metadata types
+├── scripts
+|   ├── deploy-scripts    # Scripts to automate scratch org creation, heroku environment 
+│   ├── deploy.js         # Automated Deploy script launch file
+│   └── templates         # Template for Connected apps setup
+├── slack-app
+     ├── slack-salesforce-starter-app # Node.js Slack app
+        ├── config              # Configs for Slack app
+        ├── app.js              # Main file for Slack app launch
+        ├── salesforcelib       # Folder for Salesforce related code
+              ├── connect.js       # Module to establish Salesforce connection
+        ├── manifest.YAML       # Slack app manifest file
+        ├── Procfile            # Heroku Procfile for deployment
+```
+
 ## How to Build and Deploy Code
 
 - For Salesforce metadata synchronization use `sfdx force:source:pull` to retrieve and `sfdx force:source:push` to deploy metadata from orgs to local project folder `force-app`
 
-- For Node.js app for Slack using Bolt SDK, cd into `slack-app/slack-salesforce-starter-app` and run `git push heroku main` to push code to Heroku
+- For Node.js app for Slack using Bolt SDK, cd into `slack-app/slack-salesforce-starter-app`, add git remote to app repo using `heroku git:remote -a <heroku app name>` and run `git push heroku main` to push code to Heroku
 
 ## How to Test the Salesforce Connection
 
@@ -80,6 +97,19 @@ Successful connection output
 
 ![Successful Output](./docs/images/who_am_i_output.png)
 
+## Considerations for Production app
+
+- For production application change the `SF_LOGIN_URL` from 'https://test.salesforce.com' to `https://login.salesforce.com`
+
+- Generate private key and certificates using open SSL as documented in the Salesforce (docs)[https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm] and change environment variables in Heroku to use new private key and consumer key for connected apps
+
+- Heroku Free Dynos sleep if left ideal and hence use other Dyno types.
+
 ## Troubleshooting
 
 - Connected apps activation takes couple minutes, so in case the app is failing, wait for 2 minutes and give a retry.
+- If the app is failing, Heroku logs can help provide the exact line failing
+
+## Further Reference
+- [Bolt Family of SDKs](https://api.slack.com/tools/bolt)
+- [Block Builder](https://www.npmjs.com/package/slack-block-builder)
