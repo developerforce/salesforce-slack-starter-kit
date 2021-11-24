@@ -3,10 +3,15 @@
 const sh = require("shelljs");
 const chalk = require("chalk");
 
-const { userInputPrompt } = require('./deploy-script/getuserinput');
+const { userInputPrompt } = require("./deploy-script/getuserinput");
 const { setupherokuapp } = require("./deploy-script/setupherokuapp");
-const { salesforcescratchorgsetup } = require("./deploy-script/setupsalesforceorg");
-const { createCertificate, deployConnectedApp } = require("./deploy-script/deployconnectedapp");
+const {
+  salesforcescratchorgsetup
+} = require("./deploy-script/setupsalesforceorg");
+const {
+  createCertificate,
+  deployConnectedApp
+} = require("./deploy-script/deployconnectedapp");
 
 const log = console.log;
 
@@ -16,11 +21,11 @@ sh.env.PROJECT_ROOT_DIR = sh
   .replace(/\n+$/, "");
 
 sh.env.CURRENT_BRANCH = sh
-  .exec('git branch --show-current', {
+  .exec("git branch --show-current", {
     silent: true
   })
   .toString()
-  .replace(/\n+$/, '');
+  .replace(/\n+$/, "");
 
 sh.env.SF_USERNAME = "";
 sh.env.SF_INSTANCEURL = "";
