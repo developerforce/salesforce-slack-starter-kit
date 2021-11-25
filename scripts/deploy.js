@@ -61,7 +61,6 @@ async function getuserinput() {
   log("");
   log(chalk.bold("*** Please provide the following information: "));
   const response = await userInputPrompt();
-  log("response: " + JSON.stringify(response));
   sh.env.SF_DEV_HUB = response.devhub;
   sh.env.SF_SCRATCH_ORG = response.scratchorg;
   sh.env.SF_OAUTH_FLOW = response["oauth-flow"];
