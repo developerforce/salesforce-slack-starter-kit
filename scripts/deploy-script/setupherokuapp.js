@@ -39,7 +39,7 @@ const setupherokuapp = () => {
   log("*** Setting remote configuration parameters");
   if (sh.env.SF_OAUTH_FLOW === "jwt-bearer") {
     sh.exec(
-      `heroku config:set PRIVATE_KEY="${sh.env.PRIVATEKEY}" -a ${sh.env.HEROKU_APP_NAME}`,
+      `heroku config:set PRIVATE_KEY="${sh.env.PRIVATE_KEY}" -a ${sh.env.HEROKU_APP_NAME}`,
       { silent: true }
     );
   }
