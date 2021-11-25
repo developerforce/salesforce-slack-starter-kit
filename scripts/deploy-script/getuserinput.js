@@ -10,17 +10,9 @@ const userInputPrompt = async () => {
   const oauthFlow = basicInfo["oauth-flow"];
   switch (oauthFlow) {
     case "jwt-bearer":
-      const jwtInfo = await promptJWTInfo();
-      console.log("jwtInfo: " + JSON.stringify(jwtInfo));
-      Array.prototype.push.apply(basicInfo, jwtInfo);
-      break;
+      return [...basicInfo, ...(await promptJWTInfo())];
     case "username-password":
-      const usernamePasswordInfo = await promptUsernamePasswordInfo();
-      console.log(
-        "usernamePasswordInfo: " + JSON.stringify(usernamePasswordInfo)
-      );
-      Array.prototype.push.apply(basicInfo, usernamePasswordInfo);
-      break;
+      return [...basicInfo, ...(await promptUsernamePasswordInfo())];
     default:
       throw new Error(`Unknown OAuth flow: ${oauthFlow}`);
   }
