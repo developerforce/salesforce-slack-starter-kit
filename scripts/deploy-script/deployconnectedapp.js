@@ -9,7 +9,8 @@ const { getSelfSignedCertificate } = require("./generateselfsignedcert");
 const log = console.log;
 
 const templateDir = "scripts/templates/slackApp.connectedApp-meta.xml";
-const tempDeployfolder = "connectedApps/slackApp.connectedApp-meta.xml";
+const tempDeployFolder = "connectedApps";
+const tempDeployFile = `${tempDeployFolder}/slackApp.connectedApp-meta.xml`;
 
 const deployConnectedApp = (pubkey) => {
   log("*** Creating Certificates for Salesforce Connected Apps ***");
@@ -18,7 +19,9 @@ const deployConnectedApp = (pubkey) => {
       "*** Deploying connected apps to Salesforce Environment"
     )} ${chalk.dim("(step 3 of 3)")}`
   );
-  fs.copyFileSync(templateDir, tempDeployfolder);
+  fs.rmSync(tempDeployFolder, { recursive: true, force: true });
+  fs.mkdirSync(tempDeployFolder);
+  fs.copyFileSync(templateDir, tempDeployFile);
   sh.sed(
     "-i",
     /{CONSUMERKEY}/,
@@ -60,8 +63,6 @@ const createCertificate = () => {
   resultcert.privatekey = privKey;
   resultcert.pubkey = pubKey;
   sh.env.PRIVATE_KEY = privKey;
-  // await writeFile('server.key', privKey);
-  // await writeFile('server.crt', pubKey);
   return resultcert;
 };
 
