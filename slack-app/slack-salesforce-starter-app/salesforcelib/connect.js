@@ -10,7 +10,7 @@ class Salesforce {
 
   async connect() {
     try {
-      switch (this.config.oauthMethod) {
+      switch (this.config.oauthFlow) {
         case "jwt-bearer":
           console.log("Connecting to Salesforce using jwt-bearer flow");
           this.conn = new jsforce.Connection();
