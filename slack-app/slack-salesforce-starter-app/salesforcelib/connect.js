@@ -35,7 +35,18 @@ class Salesforce {
             loginUrl: this.config.loginUrl
           });
 
-          this.conn.login(this.config.username, this.config.password);
+          this.conn.login(
+            this.config.username,
+            this.config.password,
+            (err, userInfo) => {
+              if (err) {
+                reject(err);
+              }
+              console.log(
+                "Connected to Salesforce: " + JSON.stringify(userInfo)
+              );
+            }
+          );
         default:
           break;
       }
