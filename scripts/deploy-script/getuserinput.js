@@ -39,10 +39,11 @@ const promptBasicInfo = async () => {
       message: "Slack Signing Secret"
     },
     {
-      type: "list",
+      type: "input", //TODO: change to give two options
       name: "oauth-flow",
-      message: "Salesforce OAuth Authorization Flow",
-      choices: ["jwt-bearer", "username-password"]
+      message:
+        "Salesforce OAuth Authorization Flow (username-password,jwt-bearer)",
+      initial: "username-password"
     }
   ]));
 };
