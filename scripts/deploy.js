@@ -66,7 +66,8 @@ async function getuserinput() {
   sh.env.SF_OAUTH_FLOW = response["oauth-flow"];
   sh.env.SF_USERNAME = response["sf-username"];
   sh.env.SF_PASSWORD = response["sf-password"];
-  sh.env.SF_LOGIN_URL = response["sf-login-url"];
+  sh.env.SF_LOGIN_URL =
+    response["sf-login-url"] ?? "https://test.salesforce.com";
   sh.env.HEROKU_APP_NAME = response["heroku-app"];
   sh.env.SLACK_BOT_TOKEN = response["slack-bot-token"];
   sh.env.SLACK_SIGNING_SECRET = response["slack-signing-secret"];
