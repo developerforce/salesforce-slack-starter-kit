@@ -22,7 +22,6 @@ const salesforcescratchorgsetup = () => {
     sh.exec("sfdx force:org:display --json", { silent: true })
   );
   sh.env.SF_USERNAME = userData.result.username;
-  sh.env.SF_LOGIN_URL = userData.result.instanceUrl;
   sh.env.ORGID = userData.result.id;
 
   log(chalk.green("*** ✔ Done with the Salesforce scratch org setup"));
