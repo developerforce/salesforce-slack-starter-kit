@@ -28,16 +28,21 @@ const setupherokuapp = () => {
   log("*** Writing .env file for local development");
   sh.echo("SF_OAUTH_FLOW=" + sh.env.SF_OAUTH_FLOW).toEnd(".env");
   sh.echo("SF_USERNAME=" + sh.env.SF_USERNAME).toEnd(".env");
-  sh.echo("SF_PASSWORD=" + sh.env.SF_PASSWORD).toEnd(".env");
   sh.echo("SF_LOGIN_URL=" + sh.env.SF_LOGIN_URL).toEnd(".env");
-  sh.echo("PRIVATE_KEY=" + sh.env.PRIVATEKEY).toEnd(".env");
+  if (sh.env.SF_OAUTH_FLOW === "username-password") {
+    sh.echo("SF_PASSWORD=" + sh.env.SF_PASSWORD).toEnd(".env");
+  } else if (sh.env.SF_OAUTH_FLOW === "jwt-bearer") {
+    sh.echo("PRIVATE_KEY=" + sh.env.PRIVATE_KEY).toEnd(".env");
+  }
 
   log("*** Pushing app to Heroku");
   log("*** Setting remote configuration parameters");
-  sh.exec(
-    `heroku config:set PRIVATE_KEY="${sh.env.PRIVATEKEY}" -a ${sh.env.HEROKU_APP_NAME}`,
-    { silent: true }
-  );
+  if (sh.env.SF_OAUTH_FLOW === "jwt-bearer") {
+    sh.exec(
+      `heroku config:set PRIVATE_KEY="${sh.env.PRIVATEKEY}" -a ${sh.env.HEROKU_APP_NAME}`,
+      { silent: true }
+    );
+  }
   sh.exec(
     `heroku config:set APP_BASE=slack-app/slack-salesforce-starter-app -a ${sh.env.HEROKU_APP_NAME}`
   );
@@ -47,9 +52,11 @@ const setupherokuapp = () => {
   sh.exec(
     `heroku config:set SF_USERNAME=${sh.env.SF_USERNAME} -a ${sh.env.HEROKU_APP_NAME}`
   );
-  sh.exec(
-    `heroku config:set SF_PASSWORD=${sh.env.SF_PASSWORD} -a ${sh.env.HEROKU_APP_NAME}`
-  );
+  if (sh.env.SF_OAUTH_FLOW === "username-password") {
+    sh.exec(
+      `heroku config:set SF_PASSWORD=${sh.env.SF_PASSWORD} -a ${sh.env.HEROKU_APP_NAME}`
+    );
+  }
   sh.exec(
     `heroku config:set SF_LOGIN_URL=${sh.env.SF_LOGIN_URL} -a ${sh.env.HEROKU_APP_NAME}`
   );
