@@ -29,7 +29,7 @@ const setupherokuapp = () => {
   sh.echo("SF_OAUTH_FLOW=" + sh.env.SF_OAUTH_FLOW).toEnd(".env");
   sh.echo("SF_USERNAME=" + sh.env.SF_USERNAME).toEnd(".env");
   sh.echo("SF_PASSWORD=" + sh.env.SF_PASSWORD).toEnd(".env");
-  sh.echo("SF_INSTANCEURL=" + sh.env.SF_INSTANCEURL).toEnd(".env");
+  sh.echo("SF_LOGIN_URL=" + sh.env.SF_LOGIN_URL).toEnd(".env");
   sh.echo("PRIVATE_KEY=" + sh.env.PRIVATEKEY).toEnd(".env");
 
   log("*** Pushing app to Heroku");
