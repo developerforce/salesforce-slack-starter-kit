@@ -11,12 +11,14 @@ const userInputPrompt = async () => {
   switch (oauthFlow) {
     case "jwt-bearer":
       const jwtInfo = await promptJWTInfo();
-      log("jwtInfo: " + JSON.stringify(jwtInfo));
+      console.log("jwtInfo: " + JSON.stringify(jwtInfo));
       Array.prototype.push.apply(basicInfo, jwtInfo);
       break;
     case "username-password":
       const usernamePasswordInfo = await promptUsernamePasswordInfo();
-      log("usernamePasswordInfo: " + JSON.stringify(usernamePasswordInfo));
+      console.log(
+        "usernamePasswordInfo: " + JSON.stringify(usernamePasswordInfo)
+      );
       Array.prototype.push.apply(basicInfo, usernamePasswordInfo);
       break;
     default:
