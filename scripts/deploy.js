@@ -27,8 +27,10 @@ sh.env.CURRENT_BRANCH = sh
   .toString()
   .replace(/\n+$/, "");
 
+sh.env.SF_OAUTH_FLOW = "";
 sh.env.SF_USERNAME = "";
-sh.env.SF_INSTANCEURL = "";
+sh.env.SF_PASSWORD = "";
+sh.env.SF_LOGIN_URL = "";
 sh.env.ORGID = "";
 sh.env.CONSUMERKEY = "";
 sh.env.PRIVATEKEY = "";
@@ -64,7 +66,7 @@ async function getuserinput() {
   sh.env.SF_OAUTH_FLOW = response["oauth-flow"];
   sh.env.SF_USERNAME = response["sf-username"];
   sh.env.SF_PASSWORD = response["sf-password"];
-  sh.env.SF_INSTANCE = response["sf-instance"];
+  sh.env.SF_LOGIN_URL = response["sf-login-url"];
   sh.env.HEROKU_APP_NAME = response["heroku-app"];
   sh.env.SLACK_BOT_TOKEN = response["slack-bot-token"];
   sh.env.SLACK_SIGNING_SECRET = response["slack-signing-secret"];

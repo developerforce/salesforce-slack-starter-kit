@@ -10,10 +10,11 @@ class Salesforce {
 
   async connect() {
     try {
-      this.conn = new jsforce.Connection();
-      switch (sh.env.SF_OAUTH_FLOW) {
+      switch (this.config.oauthMethod) {
         case "jwt-bearer":
           console.log("Connecting to Salesforce using jwt-bearer flow");
+          this.conn = new jsforce.Connection();
+
           // Get JWT Token
           const jwtResponse = await getToken({
             iss: this.config.clientId,
@@ -30,6 +31,10 @@ class Salesforce {
           break;
         case "username-password":
           console.log("Connecting to Salesforce using username-password flow");
+          this.conn = new jsforce.Connection({
+            loginUrl: this.config.loginUrl
+          });
+
           this.conn.login(this.config.username, this.config.password);
         default:
           break;

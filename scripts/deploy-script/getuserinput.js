@@ -66,8 +66,8 @@ const promptUsernamePasswordInfo = async () => {
     },
     {
       type: "input",
-      name: "sf-instance",
-      message: "Salesforce instance",
+      name: "sf-login-url",
+      message: "Salesforce login URL",
       initial: "https://login.salesforce.com"
     }
   ]));
