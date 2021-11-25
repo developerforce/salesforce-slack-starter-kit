@@ -1,19 +1,19 @@
-const { App, LogLevel } = require('@slack/bolt');
-const config = require('./config/config');
-const { registerListeners } = require('./listeners');
+const { App, LogLevel } = require("@slack/bolt");
+const config = require("./config/config");
+const { registerListeners } = require("./listeners");
 
 let logLevel;
 switch (process.env.LOG_LEVEL) {
-  case 'debug':
+  case "debug":
     logLevel = LogLevel.DEBUG;
     break;
-  case 'info':
+  case "info":
     logLevel = LogLevel.INFO;
     break;
-  case 'warn':
+  case "warn":
     logLevel = LogLevel.WARN;
     break;
-  case 'error':
+  case "error":
     logLevel = LogLevel.ERROR;
     break;
   default:
@@ -23,7 +23,7 @@ switch (process.env.LOG_LEVEL) {
 // Initializes your app with your bot token and signing secret
 const app = new App({
   ...config.slack,
-  logLevel,
+  logLevel
 });
 registerListeners(app);
 
@@ -31,9 +31,9 @@ registerListeners(app);
   try {
     // Start your app
     await app.start(process.env.PORT || 3000);
-    console.log('⚡️ Bolt app is running!');
+    console.log("⚡️ Bolt app is running!");
   } catch (error) {
-    console.error('Unable to start App', error);
+    console.error("Unable to start App", error);
     process.exit(1);
   }
 })();
