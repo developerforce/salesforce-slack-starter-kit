@@ -9,10 +9,11 @@ const whoamiCallback = async ({ shortcut, ack, client }) => {
     await ack();
     const conn = await sf.connect();
     //const currentuser = await conn.identity(); TODO: this only works with jwt
+    // Same with conn.instanceUrl
     // Call the views.open method using one of the built-in WebClients
     const result = await client.views.open({
       trigger_id: shortcut.trigger_id,
-      view: whoamiresponse(conn.instanceUrl, sf.config.username)
+      view: whoamiresponse(sf.config.instanceUrl, sf.config.username)
     });
   } catch (error) {
     // eslint-disable-next-line no-console
