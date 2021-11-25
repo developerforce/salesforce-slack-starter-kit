@@ -1,6 +1,6 @@
-const Salesforce = require('../../salesforcelib/connect');
-const config = require('../../config/config');
-const { whoamiresponse } = require('../../user-interface/modals');
+const Salesforce = require("../../salesforcelib/connect");
+const config = require("../../config/config");
+const { whoamiresponse } = require("../../user-interface/modals");
 
 const sf = new Salesforce(config.salesforce);
 
@@ -14,7 +14,6 @@ const whoamiCallback = async ({ shortcut, ack, client }) => {
       trigger_id: shortcut.trigger_id,
       view: whoamiresponse(conn.instanceUrl, currentuser.username)
     });
-
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error(error);

@@ -1,5 +1,5 @@
-const shortcutsListener = require('./shortcuts');
+const shortcutsListener = require("./shortcuts");
 
 module.exports.registerListeners = (app) => {
-    shortcutsListener.register(app);
+  shortcutsListener.register(app);
 };
