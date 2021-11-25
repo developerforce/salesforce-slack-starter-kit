@@ -17,8 +17,6 @@ const salesforcescratchorgsetup = () => {
   sh.exec(
     `sfdx force:org:create -s -f config/project-scratch-def.json -a ${sh.env.SF_SCRATCH_ORG} -d 30 -v ${sh.env.SF_DEV_HUB}`
   );
-  log(`*** Updating source with Heroku app URLs`);
-
   log("*** Fetching user data");
   const userData = JSON.parse(
     sh.exec("sfdx force:org:display --json", { silent: true })
