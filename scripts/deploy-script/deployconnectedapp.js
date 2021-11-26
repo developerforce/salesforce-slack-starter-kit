@@ -62,9 +62,7 @@ const createCertificate = () => {
   const pubKey = pki.certificateToPem(cert);
   resultcert.privatekey = privKey;
   resultcert.pubkey = pubKey;
-  sh.env.PRIVATEKEY = privKey;
-  // await writeFile('server.key', privKey);
-  // await writeFile('server.crt', pubKey);
+  sh.env.PRIVATE_KEY = privKey;
   return resultcert;
 };
 

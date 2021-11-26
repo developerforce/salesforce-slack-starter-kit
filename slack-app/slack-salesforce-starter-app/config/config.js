@@ -6,7 +6,8 @@ const salesforce = {
   clientId: process.env.SF_CLIENT_ID,
   privateKey: process.env.PRIVATE_KEY,
   loginUrl: process.env.SF_LOGIN_URL,
-  username: process.env.SF_USERNAME
+  username: process.env.SF_USERNAME,
+  password: process.env.SF_PASSWORD
 };
 
 // TODO Support Local Development using Socket Mode

@@ -32,20 +32,28 @@ You will need the following to deploy this sample app.
 4. Review the configuration and click _Create_
 5. Now click _Install to Workspace_ and _Allow_ on the screen that follows. You'll be redirected to the App Configuration dashboard.
 
-### Script to Set up Salesforce Scratch Org and Heroku Environment with code and config
+### Script to Set up Salesforce Org and Heroku Environment with code and config
 
-The [`scripts/deploy.js`](./scripts/deploy.js) file is what automates all the deploys and integrates them with various configuration values.
+The [`scripts/deploy.js`](./scripts/deploy.js) file is what automates all the deploys and
+integrates them with various configuration values.
 
-The script automates below:
+You can choose between using:
 
-- Creation of scratch org for Salesforce development
-- Creation, Deployment and set up of Heroku instance. The environment variables are automatically condifured to connect to Salesforce securely using [OAuth 2.0 JWT Bearer Flow for Server-to-Server Integration](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm&type=5)
-- Setup and deploy Connected Apps for authorization between Salesforce and Slack App hosted on Heroku
+1. [OAuth 2.0 JWT Bearer Flow for Server-to-Server Integration](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm&type=5). You will need to specify a dev hub, and the script will create a scratch org for you, in which the needed connected app and certificates will be automatically created.
+1. [Username Password Flow (SOAP API)](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_login.htm). You will need to specify your org's username, password and login URL. No connected app is created.
 
-Follow the below commands and instructions to set up development environment
+Note that the later should only be used for testing purposes as it's considered insecure.
+
+The script automates the steps below:
+
+- Creation of scratch org for Salesforce development (if using JWT bearer flow).
+- Creation, Deployment and set up of Heroku instance. The environment variables are automatically configured to connect to Salesforce.
+- Setup and deploy Connected Apps for authorization between Salesforce and Slack App hosted on Heroku (if using JWT bearer flow).
+
+Follow the following instructions to set up your development environment:
 
 ```console
-$ sfdx auth:web:login -d -a DevHub  # Authenticate using your Dev Hub org credentials
+$ sfdx auth:web:login -d -a DevHub  # Authenticate using your Dev Hub org credentials (only needed if using JWT bearer flow)
 $ heroku login  # Login with your Heroku account (or create one)
 $ git clone https://github.com/developerforce/salesforce-slack-starter-kit
 $ cd salesforce-slack-starter-kit/scripts
@@ -99,6 +107,8 @@ To test the app, make sure to run the Global Shortcut command `Whoami` that ship
 Successful connection output
 
 ![Successful Output](./docs/images/who_am_i_output.png)
+
+Note: the command can fail the first time you execute it because the heroku app may be sleeping.
 
 ## Considerations for Production app
 

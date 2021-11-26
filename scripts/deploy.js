@@ -28,10 +28,11 @@ sh.env.CURRENT_BRANCH = sh
   .replace(/\n+$/, "");
 
 sh.env.SF_USERNAME = "";
-sh.env.SF_INSTANCEURL = "";
+sh.env.SF_PASSWORD = "";
+sh.env.SF_LOGIN_URL = "";
 sh.env.ORGID = "";
 sh.env.CONSUMERKEY = "";
-sh.env.PRIVATEKEY = "";
+sh.env.PRIVATE_KEY = "";
 sh.env.HEROKU_APP_NAME = "";
 sh.env.SLACK_BOT_TOKEN = "";
 sh.env.SLACK_SIGNING_SECRET = "";
@@ -43,22 +44,29 @@ sh.env.SLACK_SIGNING_SECRET = "";
   await getuserinput();
   log("");
   log("*** Starting the salesforce and heroku app setup ***");
-  log("*** Creating Salesforce org ***");
-  salesforcescratchorgsetup();
-  log("*** Generating Certificates for Connected App");
-  const resultcert = createCertificate();
+  if (!sh.env.SF_PASSWORD) {
+    // jwt-bearer flow
+    log("*** Creating Salesforce org ***");
+    salesforcescratchorgsetup();
+    log("*** Generating Certificates for Connected App");
+    const resultcert = createCertificate();
+    log("*** Creating Connected app");
+    deployConnectedApp(resultcert.pubkey);
+  }
   log("*** Create Heroku App with necessary configs");
   setupherokuapp();
-  log("*** Creating Connected app");
-  deployConnectedApp(resultcert.pubkey);
 })();
 
 async function getuserinput() {
   log("");
   log(chalk.bold("*** Please provide the following information: "));
   const response = await userInputPrompt();
-  sh.env.SFDX_DEV_HUB = response.devhub;
-  sh.env.SFDX_SCRATCH_ORG = response.scratchorg;
+  sh.env.SF_DEV_HUB = response.devhub ?? "";
+  sh.env.SF_SCRATCH_ORG = response.scratchorg ?? "";
+  sh.env.SF_USERNAME = response["sf-username"];
+  sh.env.SF_PASSWORD = response["sf-password"] ?? "";
+  sh.env.SF_LOGIN_URL =
+    response["sf-login-url"] ?? "https://test.salesforce.com";
   sh.env.HEROKU_APP_NAME = response["heroku-app"];
   sh.env.SLACK_BOT_TOKEN = response["slack-bot-token"];
   sh.env.SLACK_SIGNING_SECRET = response["slack-signing-secret"];

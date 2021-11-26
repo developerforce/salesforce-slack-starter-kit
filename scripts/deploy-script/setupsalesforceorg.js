@@ -15,16 +15,13 @@ const salesforcescratchorgsetup = () => {
   );
   log("*** Creating scratch org");
   sh.exec(
-    `sfdx force:org:create -s -f config/project-scratch-def.json -a ${sh.env.SFDX_SCRATCH_ORG} -d 30 -v ${sh.env.SFDX_DEV_HUB}`
+    `sfdx force:org:create -s -f config/project-scratch-def.json -a ${sh.env.SF_SCRATCH_ORG} -d 30 -v ${sh.env.SF_DEV_HUB}`
   );
-  log(`*** Updating source with Heroku app URLs`);
-
   log("*** Fetching user data");
   const userData = JSON.parse(
     sh.exec("sfdx force:org:display --json", { silent: true })
   );
   sh.env.SF_USERNAME = userData.result.username;
-  sh.env.SF_INSTANCEURL = userData.result.instanceUrl;
   sh.env.ORGID = userData.result.id;
 
   log(chalk.green("*** ✔ Done with the Salesforce scratch org setup"));
