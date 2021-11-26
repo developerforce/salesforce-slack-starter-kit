@@ -27,7 +27,6 @@ sh.env.CURRENT_BRANCH = sh
   .toString()
   .replace(/\n+$/, "");
 
-sh.env.SF_OAUTH_FLOW = "";
 sh.env.SF_USERNAME = "";
 sh.env.SF_PASSWORD = "";
 sh.env.SF_LOGIN_URL = "";
@@ -45,7 +44,8 @@ sh.env.SLACK_SIGNING_SECRET = "";
   await getuserinput();
   log("");
   log("*** Starting the salesforce and heroku app setup ***");
-  if (sh.env.SF_OAUTH_FLOW === "jwt-bearer") {
+  if (!sh.env.SF_PASSWORD) {
+    // jwt-bearer flow
     log("*** Creating Salesforce org ***");
     salesforcescratchorgsetup();
     log("*** Generating Certificates for Connected App");
@@ -61,11 +61,10 @@ async function getuserinput() {
   log("");
   log(chalk.bold("*** Please provide the following information: "));
   const response = await userInputPrompt();
-  sh.env.SF_DEV_HUB = response.devhub;
-  sh.env.SF_SCRATCH_ORG = response.scratchorg;
-  sh.env.SF_OAUTH_FLOW = response["oauth-flow"];
+  sh.env.SF_DEV_HUB = response.devhub ?? "";
+  sh.env.SF_SCRATCH_ORG = response.scratchorg ?? "";
   sh.env.SF_USERNAME = response["sf-username"];
-  sh.env.SF_PASSWORD = response["sf-password"];
+  sh.env.SF_PASSWORD = response["sf-password"] ?? "";
   sh.env.SF_LOGIN_URL =
     response["sf-login-url"] ?? "https://test.salesforce.com";
   sh.env.HEROKU_APP_NAME = response["heroku-app"];

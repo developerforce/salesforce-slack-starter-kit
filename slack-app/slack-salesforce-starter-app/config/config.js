@@ -7,8 +7,7 @@ const salesforce = {
   privateKey: process.env.PRIVATE_KEY,
   loginUrl: process.env.SF_LOGIN_URL,
   username: process.env.SF_USERNAME,
-  password: process.env.SF_PASSWORD,
-  oauthFlow: process.env.SF_OAUTH_FLOW
+  password: process.env.SF_PASSWORD
 };
 
 // TODO Support Local Development using Socket Mode

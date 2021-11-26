@@ -7,14 +7,14 @@ const {
 
 const userInputPrompt = async () => {
   const basicInfo = await promptBasicInfo();
-  const oauthFlow = basicInfo["oauth-flow"];
-  switch (oauthFlow) {
+  const authFlow = basicInfo["auth-flow"];
+  switch (authFlow) {
     case "jwt-bearer":
       return { ...basicInfo, ...(await promptJWTInfo()) };
     case "username-password":
       return { ...basicInfo, ...(await promptUsernamePasswordInfo()) };
     default:
-      throw new Error(`Unknown OAuth flow: ${oauthFlow}`);
+      throw new Error(`Unknown Auth flow: ${authFlow}`);
   }
   return basicInfo;
 };
@@ -39,11 +39,10 @@ const promptBasicInfo = async () => {
       message: "Slack Signing Secret"
     },
     {
-      type: "input", //TODO: change to give two options
-      name: "oauth-flow",
-      message:
-        "Salesforce OAuth Authorization Flow (username-password,jwt-bearer)",
-      initial: "username-password"
+      type: "select",
+      name: "auth-flow",
+      message: "Salesforce Authorization Flow",
+      choices: ["username-password", "jwt-bearer"]
     }
   ]));
 };

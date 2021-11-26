@@ -10,45 +10,41 @@ class Salesforce {
 
   async connect() {
     try {
-      switch (this.config.oauthFlow) {
-        case "jwt-bearer":
-          console.log("Connecting to Salesforce using jwt-bearer flow");
-          this.conn = new jsforce.Connection();
+      if (this.config.password) {
+        // username-password flow
+        console.log("Connecting to Salesforce using username-password flow");
+        this.conn = new jsforce.Connection({
+          loginUrl: this.config.loginUrl
+        });
 
-          // Get JWT Token
-          const jwtResponse = await getToken({
-            iss: this.config.clientId,
-            sub: this.config.username,
-            aud: this.config.loginUrl,
-            privateKey: this.config.privateKey
-          });
-
-          // Initialize connection
-          this.conn.initialize({
-            instanceUrl: jwtResponse.instance_url,
-            accessToken: jwtResponse.access_token
-          });
-          break;
-        case "username-password":
-          console.log("Connecting to Salesforce using username-password flow");
-          this.conn = new jsforce.Connection({
-            loginUrl: this.config.loginUrl
-          });
-
-          this.conn.login(
-            this.config.username,
-            this.config.password,
-            (err, userInfo) => {
-              if (err) {
-                reject(err);
-              }
-              console.log(
-                "Connected to Salesforce: " + JSON.stringify(userInfo)
-              );
+        this.conn.login(
+          this.config.username,
+          this.config.password,
+          (err, userInfo) => {
+            if (err) {
+              reject(err);
             }
-          );
-        default:
-          break;
+            console.log("Connected to Salesforce: " + JSON.stringify(userInfo));
+          }
+        );
+      } else {
+        // jwt-bearer flow
+        console.log("Connecting to Salesforce using jwt-bearer flow");
+        this.conn = new jsforce.Connection();
+
+        // Get JWT Token
+        const jwtResponse = await getToken({
+          iss: this.config.clientId,
+          sub: this.config.username,
+          aud: this.config.loginUrl,
+          privateKey: this.config.privateKey
+        });
+
+        // Initialize connection
+        this.conn.initialize({
+          instanceUrl: jwtResponse.instance_url,
+          accessToken: jwtResponse.access_token
+        });
       }
       return this.conn;
     } catch (e) {
