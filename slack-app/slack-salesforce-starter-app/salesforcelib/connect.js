@@ -17,16 +17,7 @@ class Salesforce {
           loginUrl: this.config.loginUrl
         });
 
-        this.conn.login(
-          this.config.username,
-          this.config.password,
-          (err, userInfo) => {
-            if (err) {
-              reject(err);
-            }
-            console.log("Connected to Salesforce: " + JSON.stringify(userInfo));
-          }
-        );
+        await this.conn.login(this.config.username, this.config.password);
       } else {
         // jwt-bearer flow
         console.log("Connecting to Salesforce using jwt-bearer flow");
