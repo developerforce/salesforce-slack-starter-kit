@@ -38,23 +38,27 @@ sh.env.SLACK_BOT_TOKEN = "";
 sh.env.SLACK_SIGNING_SECRET = "";
 
 (async () => {
-  // Run the commands in the rest of this script from the root directory
-  sh.cd(sh.env.PROJECT_ROOT_DIR);
-  // Ask user to input values needed for the deploy
-  await getuserinput();
-  log("");
-  log("*** Starting the salesforce and heroku app setup ***");
-  if (!sh.env.SF_PASSWORD) {
-    // jwt-bearer flow
-    log("*** Creating Salesforce org ***");
-    salesforcescratchorgsetup();
-    log("*** Generating Certificates for Connected App");
-    const resultcert = createCertificate();
-    log("*** Creating Connected app");
-    deployConnectedApp(resultcert.pubkey);
+  try {
+    // Run the commands in the rest of this script from the root directory
+    sh.cd(sh.env.PROJECT_ROOT_DIR);
+    // Ask user to input values needed for the deploy
+    await getuserinput();
+    log("");
+    log("*** Starting the salesforce and heroku app setup ***");
+    if (!sh.env.SF_PASSWORD) {
+      // jwt-bearer flow
+      log("*** Creating Salesforce org ***");
+      salesforcescratchorgsetup();
+      log("*** Generating Certificates for Connected App");
+      const resultcert = createCertificate();
+      log("*** Creating Connected app");
+      deployConnectedApp(resultcert.pubkey);
+    }
+    log("*** Create Heroku App with necessary configs");
+    setupherokuapp();
+  } catch (err) {
+    log(chalk.bold.red(`*** ERROR: ${err}`));
   }
-  log("*** Create Heroku App with necessary configs");
-  setupherokuapp();
 })();
 
 async function getuserinput() {

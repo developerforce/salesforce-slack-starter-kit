@@ -14,9 +14,14 @@ const salesforcescratchorgsetup = () => {
     )}`
   );
   log("*** Creating scratch org");
-  sh.exec(
-    `sfdx force:org:create -s -f config/project-scratch-def.json -a ${sh.env.SF_SCRATCH_ORG} -d 30 -v ${sh.env.SF_DEV_HUB}`
+  const scratchOrgResult = sh.exec(
+    `sfdx force:org:create -s -f config/project-scratch-def.json -a ${sh.env.SF_SCRATCH_ORG} -d 30 -v ${sh.env.SF_DEV_HUB}`,
+    { silent: true }
   );
+  // Check error creating scratch org
+  if (scratchOrgResult.stderr) {
+    throw new Error(scratchOrgResult.stderr);
+  }
   log("*** Fetching user data");
   const userData = JSON.parse(
     sh.exec("sfdx force:org:display --json", { silent: true })
