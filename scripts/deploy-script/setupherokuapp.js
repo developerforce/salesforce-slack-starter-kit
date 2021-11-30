@@ -8,6 +8,20 @@ const setupherokuapp = () => {
   log(
     `${chalk.bold("*** Setting up Heroku app")} ${chalk.dim("(step 2 of 3)")}`
   );
+  // Check user is correctly logged into Heroku
+  const whoAmI = sh.exec("heroku whoami", { silent: true });
+  if (whoAmI.stderr) {
+    throw new Error(
+      "Not logged into Heroku. Run heroku login to authenticate yourself."
+    );
+  }
+  // Check app name is not already used
+  const appNameCheck = sh.exec(`heroku apps:info ${sh.env.HEROKU_APP_NAME}`, {
+    silent: true
+  });
+  if (appNameCheck.stdout.includes(sh.env.HEROKU_APP_NAME)) {
+    throw new Error(`App name already in use: ${sh.env.HEROKU_APP_NAME}`);
+  }
   sh.cd("slack-app/slack-salesforce-starter-app");
 
   log(`*** Creating Heroku app ${chalk.bold(sh.env.HEROKU_APP_NAME)}`);
@@ -26,12 +40,13 @@ const setupherokuapp = () => {
   });
 
   log("*** Writing .env file for local development");
-  sh.echo("SF_USERNAME=" + sh.env.SF_USERNAME).toEnd(".env");
+  sh.echo("SF_USERNAME=" + sh.env.SF_USERNAME).to(".env");
   sh.echo("SF_LOGIN_URL=" + sh.env.SF_LOGIN_URL).toEnd(".env");
   if (sh.env.SF_PASSWORD) {
     // username-password flow
     sh.echo("SF_PASSWORD=" + sh.env.SF_PASSWORD).toEnd(".env");
   } else {
+    // jwt-bearer flow
     sh.echo("PRIVATE_KEY=" + sh.env.PRIVATE_KEY).toEnd(".env");
   }
 
