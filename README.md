@@ -28,7 +28,7 @@ You will need the following to deploy this sample app.
 
 1. Open [https://api.slack.com/apps/new](https://api.slack.com/apps/new) and choose "From an app manifest"
 2. Choose the workspace you want to install the application to
-3. Copy the contents of [manifest.yml](./slack-app/slack-salesforce-starter-app/manifest.YAML) into the text box that says `*Paste your manifest code here*` and click _Next_
+3. Copy the contents of [manifest.yml](./apps/slack-salesforce-starter-app/manifest.YAML) into the text box that says `*Paste your manifest code here*` and click _Next_
 4. Review the configuration and click _Create_
 5. Now click _Install to Workspace_ and _Allow_ on the screen that follows. You'll be redirected to the App Configuration dashboard.
 
@@ -82,7 +82,7 @@ This is the last step, you will need to enter the corrent Heroku Instance url in
 |   ├── deploy-scripts    # Scripts to automate scratch org creation, heroku environment
 │   ├── deploy.js         # Automated Deploy script launch file
 │   └── templates         # Template for Connected apps setup
-├── slack-app
+├── apps
      ├── slack-salesforce-starter-app # Node.js Slack app
         ├── config              # Configs for Slack app
         ├── app.js              # Main file for Slack app launch
@@ -96,7 +96,7 @@ This is the last step, you will need to enter the corrent Heroku Instance url in
 
 - For Salesforce metadata synchronization use `sfdx force:source:pull` to retrieve and `sfdx force:source:push` to deploy metadata from orgs to local project folder `force-app`
 
-- For Node.js app for Slack using Bolt SDK, cd into `slack-app/slack-salesforce-starter-app`, add git remote to app repo using `heroku git:remote -a <heroku app name>` and run `git push heroku main` to push code to Heroku
+- For Node.js app for Slack using Bolt SDK, cd into `apps/slack-salesforce-starter-app`, add git remote to app repo using `heroku git:remote -a <heroku app name>` and run `git push heroku main` to push code to Heroku
 
 ## How to Test the Salesforce Connection
 

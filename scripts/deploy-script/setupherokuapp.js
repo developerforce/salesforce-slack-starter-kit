@@ -22,7 +22,7 @@ const setupherokuapp = () => {
   if (appNameCheck.stdout.includes(sh.env.HEROKU_APP_NAME)) {
     throw new Error(`App name already in use: ${sh.env.HEROKU_APP_NAME}`);
   }
-  sh.cd("slack-app/slack-salesforce-starter-app");
+  sh.cd("apps/slack-salesforce-starter-app");
 
   log(`*** Creating Heroku app ${chalk.bold(sh.env.HEROKU_APP_NAME)}`);
   const appData = JSON.parse(
@@ -60,7 +60,7 @@ const setupherokuapp = () => {
     );
   }
   sh.exec(
-    `heroku config:set APP_BASE=slack-app/slack-salesforce-starter-app -a ${sh.env.HEROKU_APP_NAME}`
+    `heroku config:set APP_BASE=apps/slack-salesforce-starter-app -a ${sh.env.HEROKU_APP_NAME}`
   );
   sh.exec(
     `heroku config:set SF_USERNAME=${sh.env.SF_USERNAME} -a ${sh.env.HEROKU_APP_NAME}`
