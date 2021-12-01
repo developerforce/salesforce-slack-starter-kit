@@ -1,0 +1,17 @@
+version: 2
+updates:
+    - package-ecosystem: npm
+      directory: '/scripts'
+      schedule:
+          interval: monthly
+      open-pull-requests-limit: 10
+    - package-ecosystem: npm
+      directory: '/apps/slack-salesforce-starter-app'
+      schedule:
+          interval: monthly
+      open-pull-requests-limit: 10
+    - package-ecosystem: npm
+      directory: '/'
+      schedule:
+          interval: monthly
+      open-pull-requests-limit: 10
