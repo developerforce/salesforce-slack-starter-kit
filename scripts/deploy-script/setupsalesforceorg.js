@@ -15,7 +15,7 @@ const salesforcescratchorgsetup = () => {
   );
   log("*** Creating scratch org");
   const scratchOrgResult = sh.exec(
-    `sfdx force:org:create -s -f config/project-scratch-def.json -a ${sh.env.SF_SCRATCH_ORG} -d 30 -v ${sh.env.SF_DEV_HUB}`,
+    `sfdx force:org:create -s -f config/project-scratch-def.json -a ${sh.env.SF_SCRATCH_ORG} -d 30 -v ${sh.env.SF_DEV_HUB} --json`,
     { silent: true }
   );
   // Check error creating scratch org
