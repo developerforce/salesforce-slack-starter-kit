@@ -3,15 +3,15 @@
 const sh = require("shelljs");
 const chalk = require("chalk");
 
-const { userInputPrompt } = require("./deploy-script/getuserinput");
-const { setupherokuapp } = require("./deploy-script/setupherokuapp");
+const { userInputPrompt } = require("./deploy/getuserinput");
+const { setupherokuapp } = require("./deploy/setupherokuapp");
 const {
   salesforcescratchorgsetup
-} = require("./deploy-script/setupsalesforceorg");
+} = require("./deploy/setupsalesforceorg");
 const {
   createCertificate,
   deployConnectedApp
-} = require("./deploy-script/deployconnectedapp");
+} = require("./deploy/deployconnectedapp");
 
 const log = console.log;
 
