@@ -79,7 +79,7 @@ This is the last step, you will need to enter the corrent Heroku Instance url in
 ```bash
 ├── force-app             # Folder that holds Salesforce metadata types
 ├── scripts
-|   ├── deploy-scripts    # Scripts to automate scratch org creation, heroku environment
+|   ├── deploy            # Scripts to automate scratch org creation, heroku environment
 │   ├── deploy.js         # Automated Deploy script launch file
 │   └── templates         # Template for Connected apps setup
 ├── apps
