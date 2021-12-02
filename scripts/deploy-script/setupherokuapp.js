@@ -1,6 +1,7 @@
 "use strict";
 const sh = require("shelljs");
 const chalk = require("chalk");
+const fs = require("fs");
 const log = console.log;
 
 const setupherokuapp = () => {
@@ -40,16 +41,24 @@ const setupherokuapp = () => {
   });
 
   log("*** Writing .env file for local development");
-  sh.echo("SF_USERNAME=" + sh.env.SF_USERNAME).to(".env");
-  sh.echo("SF_LOGIN_URL=" + sh.env.SF_LOGIN_URL).toEnd(".env");
+  fs.writeFileSync(".env", ''); // empty the .env file for fresh write
+  const stream = fs.createWriteStream(".env", {flags:'a'});
+  // env variables for Slack Auth
+  stream.write("SLACK_SIGNING_SECRET=" + sh.env.SLACK_SIGNING_SECRET + "\r\n");
+  stream.write("SLACK_BOT_TOKEN=" + sh.env.SLACK_BOT_TOKEN + "\r\n");
+  // env variables for Salesforce Auth
+  stream.write("SF_USERNAME=" + sh.env.SF_USERNAME + "\r\n");
+  stream.write("SF_LOGIN_URL=" + sh.env.SF_LOGIN_URL + "\r\n");
   if (sh.env.SF_PASSWORD) {
     // username-password flow
-    sh.echo("SF_PASSWORD=" + sh.env.SF_PASSWORD).toEnd(".env");
+    stream.write("SF_PASSWORD=" + sh.env.SF_PASSWORD + "\r\n");
   } else {
     // jwt-bearer flow
-    sh.echo("PRIVATE_KEY=" + sh.env.PRIVATE_KEY).toEnd(".env");
+    stream.write("SF_CLIENT_ID=" + sh.env.CONSUMERKEY + "\r\n");
+    stream.write("PRIVATE_KEY=" + "\"" + sh.env.PRIVATE_KEY.replace(/(\r\n|\r|\n)/g, "\\n") + "\"");
   }
-
+  stream.close();
+  
   log("*** Pushing app to Heroku");
   log("*** Setting remote configuration parameters");
   if (!sh.env.SF_PASSWORD) {
