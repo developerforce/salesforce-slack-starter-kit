@@ -4,7 +4,7 @@ const slack_user = require('../store/slack-user');
 const fs = require('fs');
 const path = require('path');
 const { upsert } = require('../salesforcelib/dml/slack-authentication');
-const app = require('../app');
+const SlackWebClient = require('../store/bolt-web-client');
 const { authorization_success_screen } = require('../user-interface/app-home');
 
 const fetchOAuthToken = async (req, res) => {
@@ -24,7 +24,7 @@ const fetchOAuthToken = async (req, res) => {
         // Upsert Salesforce and Slack mappings into Salesforce Authentication Object
         upsert(conn, slack_user.userId, result.id);
         // Update the views in the Slack App
-        await app.client.views.publish({
+        await SlackWebClient.client.views.publish({
             // Use the user ID associated with the event
             user_id: slack_user.userId,
             view: authorization_success_screen(currentuser.username)

@@ -2,6 +2,7 @@ const { App, LogLevel } = require('@slack/bolt');
 const config = require('./config/config');
 const { registerListeners } = require('./listeners');
 const { registerCustomRoutes } = require('./routes');
+const SlackWebClient = require('./store/bolt-web-client');
 
 let logLevel;
 switch (process.env.LOG_LEVEL) {
@@ -31,6 +32,9 @@ const app = new App({
 // Register Listeners
 registerListeners(app);
 
+// Assign Slack WebClient
+SlackWebClient.client = app.client;
+
 // Asynchronous function to start the app
 (async () => {
     try {
@@ -42,5 +46,3 @@ registerListeners(app);
         process.exit(1);
     }
 })();
-
-module.exports = app;
