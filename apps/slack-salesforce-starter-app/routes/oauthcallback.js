@@ -20,14 +20,6 @@ const fetchOAuthToken = async (req, res) => {
     try {
         // Authorize to obtain refresh and access tokens
         const result = await conn.authorize(code);
-        // Send success message
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(
-            fs.readFileSync(
-                path.resolve(__dirname, '../routes/oauthsuccess.html')
-            ),
-            'utf-8'
-        );
         const currentuser = await conn.identity();
         // Upsert Salesforce and Slack mappings into Salesforce Authentication Object
         upsert(conn, slack_user.userId, result.id);
@@ -37,6 +29,14 @@ const fetchOAuthToken = async (req, res) => {
             user_id: slack_user.userId,
             view: authorization_success_screen(currentuser.username)
         });
+        // Send success message
+        res.writeHead(200, { 'Content-Type': 'text/html' });
+        res.end(
+            fs.readFileSync(
+                path.resolve(__dirname, '../routes/oauthsuccess.html')
+            ),
+            'utf-8'
+        );
     } catch (e) {
         res.writeHead(500);
         res.end(JSON.stringify(e), 'utf-8');

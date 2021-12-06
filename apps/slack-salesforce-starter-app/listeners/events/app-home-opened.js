@@ -2,15 +2,12 @@ const { authorization_screen } = require('../../user-interface/app-home');
 const slack_user = require('../../store/slack-user');
 
 const appHomeOpenedCallback = async ({ client, event, body }) => {
-    console.log(event);
-    console.log(body);
     if (event.tab !== 'home') {
         // Ignore the `app_home_opened` event for everything
         // except home as we don't support a conversational UI
         return;
     }
     try {
-        console.log(event);
         slack_user.userId = event.user;
         if (event.view) {
             // Call views.publish with the built-in client
