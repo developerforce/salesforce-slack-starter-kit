@@ -1,9 +1,9 @@
-const { oauthcallback } = require('./oauthcallback')
+const { oauthcallback } = require('./oauthcallback');
 
-const registercustomRoutes = () => {
-    const routes = []
-    routes.push(oauthcallback)
-    return routes
-}
+const registerCustomRoutes = () => {
+    const routes = [];
+    routes.push(oauthcallback);
+    return routes;
+};
 
-module.exports = { registercustomRoutes }
+module.exports = { registerCustomRoutes };

@@ -1,8 +1,8 @@
 // Singleton Class to persist the Slack userId throughout the Node.js process
 class SlackUser {
     constructor() {
-        this.userId = {}
+        this.userId = {};
     }
 }
 
-module.exports = new SlackUser()
+module.exports = new SlackUser();

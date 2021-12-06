@@ -1,5 +1,5 @@
 const upsert = async (connection, slackUserId, salesforceUserId) => {
-    try{
+    try {
         result = await connection.sobject('Slack_Authentication__c').upsert(
             {
                 Access_Token__c: connection.accessToken,
@@ -9,14 +9,16 @@ const upsert = async (connection, slackUserId, salesforceUserId) => {
             },
             'Slack_User_ID__c'
         );
-        if(!result.success){
-            throw 'failed to map Slack user to Salesforce user' + JSON.stringify(result);
+        if (!result.success) {
+            throw (
+                'failed to map Slack user to Salesforce user' +
+                JSON.stringify(result)
+            );
         }
         return result;
-    } catch(e) {
+    } catch (e) {
         throw 'failed to map Slack user to Salesforce user' + e.message;
     }
-    
-}
+};
 
-module.exports = { upsert }
+module.exports = { upsert };

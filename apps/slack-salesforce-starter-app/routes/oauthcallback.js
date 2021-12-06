@@ -1,9 +1,11 @@
-const jsforce = require('jsforce')
-const url = require('url')
-const slack_user = require('../store/slack-user')
-const fs = require('fs')
-const path = require('path')
-const { upsert } = require('../salesforcelib/dml/slack-authentication')
+const jsforce = require('jsforce');
+const url = require('url');
+const slack_user = require('../store/slack-user');
+const fs = require('fs');
+const path = require('path');
+const { upsert } = require('../salesforcelib/dml/slack-authentication');
+const app = require('../store/bolt-app');
+const { authorization_success_screen } = require('../user-interface/app-home');
 
 const fetchOAuthToken = async (req, res) => {
     const oauth2 = new jsforce.OAuth2({
@@ -11,31 +13,40 @@ const fetchOAuthToken = async (req, res) => {
         loginUrl: process.env.SF_LOGIN_URL,
         clientId: process.env.SF_CLIENT_ID,
         clientSecret: process.env.SF_CLIENT_SECRET,
-        redirectUri: process.env.SF_REDIRECT_URL,
-    })
-    var conn = new jsforce.Connection({ oauth2: oauth2 })
-    var code = url.parse(req.url, true).query.code
+        redirectUri: process.env.SF_REDIRECT_URL
+    });
+    var conn = new jsforce.Connection({ oauth2: oauth2 });
+    var code = url.parse(req.url, true).query.code;
     try {
-        const result = await conn.authorize(code)
-        res.writeHead(200, { 'Content-Type': 'text/html' })
+        // Authorize to obtain refresh and access tokens
+        const result = await conn.authorize(code);
+        // Send success message
+        res.writeHead(200, { 'Content-Type': 'text/html' });
         res.end(
             fs.readFileSync(
                 path.resolve(__dirname, '../routes/oauthsuccess.html')
             ),
             'utf-8'
-        )
+        );
+        const currentuser = await conn.identity();
         // Upsert Salesforce and Slack mappings into Salesforce Authentication Object
-        upsert(conn, slack_user.userId, result.id)
+        upsert(conn, slack_user.userId, result.id);
+        // Update the views in the Slack App
+        await app.client.views.publish({
+            // Use the user ID associated with the event
+            user_id: slack_user.userId,
+            view: authorization_success_screen(currentuser.username)
+        });
     } catch (e) {
-        res.writeHead(500)
-        res.end(JSON.stringify(e), 'utf-8')
+        res.writeHead(500);
+        res.end(JSON.stringify(e), 'utf-8');
     }
-}
+};
 
 const oauthcallback = {
     path: '/oauthcallback',
     method: ['GET'],
-    handler: fetchOAuthToken,
-}
+    handler: fetchOAuthToken
+};
 
-module.exports = { oauthcallback }
+module.exports = { oauthcallback };
