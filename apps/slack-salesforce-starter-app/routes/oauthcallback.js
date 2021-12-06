@@ -1,8 +1,9 @@
-var jsforce = require('jsforce')
+const jsforce = require('jsforce')
 const url = require('url')
 const slack_user = require('../store/slack-user')
 const fs = require('fs')
 const path = require('path')
+const { upsert } = require('../salesforcelib/dml/slack-authentication')
 
 const fetchOAuthToken = async (req, res) => {
     const oauth2 = new jsforce.OAuth2({
@@ -23,8 +24,8 @@ const fetchOAuthToken = async (req, res) => {
             ),
             'utf-8'
         )
-        console.log(result)
-        console.log('after' + slack_user.userId)
+        // Upsert Salesforce and Slack mappings into Salesforce Authentication Object
+        upsert(conn, slack_user.userId, result.id)
     } catch (e) {
         res.writeHead(500)
         res.end(JSON.stringify(e), 'utf-8')

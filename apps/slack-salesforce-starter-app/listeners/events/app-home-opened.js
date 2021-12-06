@@ -12,7 +12,6 @@ const appHomeOpenedCallback = async ({ client, event, body }) => {
     try {
         console.log(event)
         slack_user.userId = event.user
-        console.log('before' + slack_user.userId)
         if (event.view) {
             // Call views.publish with the built-in client
             await client.views.publish({
