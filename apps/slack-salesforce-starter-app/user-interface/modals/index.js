@@ -1,3 +1,3 @@
-const { whoamiresponse } = require("./whoami-response");
+const { whoamiresponse } = require('./whoami-response')
 
-module.exports = { whoamiresponse };
+module.exports = { whoamiresponse }

@@ -114,14 +114,14 @@ Note: the command can fail the first time you execute it because the heroku app 
 
 - For production application change the `SF_LOGIN_URL` from 'https://test.salesforce.com' to `https://login.salesforce.com`
 
-- Generate private key and certificates using open SSL as documented in the Salesforce (docs)[https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm] and change environment variables in Heroku to use new private key and consumer key for connected apps
+- Generate private key and certificates using open SSL as documented in the Salesforce (docs)[https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm] and change environment variables in Heroku to use new private key and consumer key and client secret obtained from the connected app in Salesforce.
 
-- Heroku Free Dynos sleep if left ideal and hence use other Dyno types.
+- Heroku Free Dynos sleep if left ideal. For Production application prefer paid Dynos.
 
 ## Troubleshooting
 
-- Connected apps activation takes couple minutes, so in case the app is failing, wait for 2 minutes and give a retry.
-- If the app is failing, Heroku logs can help provide the exact line failing
+- Connected apps activation takes couple minutes, so in case the app is failing with 400 error for JWT auth, wait for 2 minutes and give a retry.
+- If the app is failing, tail Heroku logs to see any errors
 
 ## Further Reference
 

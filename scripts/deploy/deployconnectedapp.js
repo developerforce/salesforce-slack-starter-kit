@@ -40,6 +40,12 @@ const deployConnectedApp = (pubkey) => {
     sh.env.SF_USERNAME,
     "connectedApps/slackApp.connectedApp-meta.xml"
   );
+  sh.sed(
+    "-i",
+    /{HEROKUINSTANCE}/,
+    sh.env.HEROKU_APP_NAME,
+    "connectedApps/slackApp.connectedApp-meta.xml"
+  );
   sh.exec(
     "sfdx force:source:deploy -p connectedApps/slackApp.connectedApp-meta.xml"
   );

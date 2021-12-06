@@ -1,26 +1,27 @@
-"use strict";
+'use strict'
 
-require("dotenv").config();
+require('dotenv').config()
 
 const salesforce = {
-  clientId: process.env.SF_CLIENT_ID,
-  privateKey: process.env.PRIVATE_KEY,
-  loginUrl: process.env.SF_LOGIN_URL,
-  username: process.env.SF_USERNAME,
-  password: process.env.SF_PASSWORD
-};
+    clientId: process.env.SF_CLIENT_ID,
+    clientSecret: process.env.SF_CLIENT_SECRET,
+    redirectUrl: process.env.SF_REDIRECT_URL,
+    privateKey: process.env.PRIVATE_KEY,
+    loginUrl: process.env.SF_LOGIN_URL,
+    username: process.env.SF_USERNAME,
+    password: process.env.SF_PASSWORD,
+}
 
-// TODO Support Local Development using Socket Mode
-// For now we focus on listening events directly in Heroku
+// For Local Development using Socket Mode uncomment socketMode and appToken
 const slack = {
-  token: process.env.SLACK_BOT_TOKEN,
-  signingSecret: process.env.SLACK_SIGNING_SECRET,
-  port: process.env.PORT || 3000
-  //socketMode: true,
-  //appToken: process.env.SLACK_APP_TOKEN
-};
+    token: process.env.SLACK_BOT_TOKEN,
+    signingSecret: process.env.SLACK_SIGNING_SECRET,
+    port: process.env.PORT || 3000,
+    socketMode: true,
+    appToken: process.env.SLACK_APP_TOKEN
+}
 
 module.exports = {
-  salesforce,
-  slack
-};
+    salesforce,
+    slack,
+}
