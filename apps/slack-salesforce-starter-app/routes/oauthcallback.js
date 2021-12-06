@@ -38,6 +38,7 @@ const fetchOAuthToken = async (req, res) => {
             'utf-8'
         );
     } catch (e) {
+        console.log(e);
         res.writeHead(500);
         res.end(JSON.stringify(e), 'utf-8');
     }
