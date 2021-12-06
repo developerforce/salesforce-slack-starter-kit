@@ -2,7 +2,6 @@ const { App, LogLevel } = require('@slack/bolt');
 const config = require('./config/config');
 const { registerListeners } = require('./listeners');
 const { registerCustomRoutes } = require('./routes');
-const { registerApp } = require('./store/bolt-app');
 
 let logLevel;
 switch (process.env.LOG_LEVEL) {
@@ -28,8 +27,6 @@ const app = new App({
     customRoutes: registerCustomRoutes(),
     logLevel
 });
-// Register App for using Web APIs
-registerApp(app);
 
 // Register Listeners
 registerListeners(app);
@@ -45,3 +42,5 @@ registerListeners(app);
         process.exit(1);
     }
 })();
+
+module.exports = app;

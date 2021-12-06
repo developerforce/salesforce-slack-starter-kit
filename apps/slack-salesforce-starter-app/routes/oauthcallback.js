@@ -4,7 +4,7 @@ const slack_user = require('../store/slack-user');
 const fs = require('fs');
 const path = require('path');
 const { upsert } = require('../salesforcelib/dml/slack-authentication');
-const app = require('../store/bolt-app');
+const app = require('../app');
 const { authorization_success_screen } = require('../user-interface/app-home');
 
 const fetchOAuthToken = async (req, res) => {

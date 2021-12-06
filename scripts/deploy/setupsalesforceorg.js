@@ -29,6 +29,12 @@ const salesforcescratchorgsetup = () => {
   sh.env.SF_USERNAME = userData.result.username;
   sh.env.ORGID = userData.result.id;
 
+  // push code to scratch org
+  const deployResult = sh.exec(
+    `sfdx force:source:push -u ${userData.result.username}`,
+    { silent: true }
+  );
+
   log(chalk.green("*** ✔ Done with the Salesforce scratch org setup"));
 };
 
