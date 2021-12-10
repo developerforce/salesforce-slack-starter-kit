@@ -1,3 +1,4 @@
+'use strict';
 const { HomeTab, Actions, Elements, Blocks } = require('slack-block-builder');
 
 const authorization_screen = (authurl) => {
@@ -8,7 +9,7 @@ const authorization_screen = (authurl) => {
         Blocks.Header({ text: 'Connect to Salesforce' }),
         Blocks.Divider(),
         Blocks.Section({
-            text: 'To get started with the Travel Approval app authorize with Salesforce'
+            text: 'To get started with the Salesforce Slack Starter app, authorize with Salesforce'
         }),
         Actions({ blockId: 'sf-login' }).elements(
             Elements.Button({ text: 'Authorize with Salesforce' })

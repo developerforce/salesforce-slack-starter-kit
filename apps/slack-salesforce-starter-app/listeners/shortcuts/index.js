@@ -1,3 +1,5 @@
+'use strict';
+
 const { whoamiCallback } = require('./whoami');
 
 module.exports.register = (app) => {

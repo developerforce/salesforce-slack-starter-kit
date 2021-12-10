@@ -1,3 +1,5 @@
+'use strict';
+
 const upsert = async (connection, slackUserId, salesforceUserId) => {
     try {
         result = await connection.sobject('Slack_Authentication__c').upsert(

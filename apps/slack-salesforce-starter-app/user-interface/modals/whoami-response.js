@@ -1,3 +1,4 @@
+'use strict';
 const { Modal, Blocks } = require('slack-block-builder');
 
 const whoamiresponse = (instanceurl, username) => {

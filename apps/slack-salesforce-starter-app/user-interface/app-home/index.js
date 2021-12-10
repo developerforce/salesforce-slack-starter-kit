@@ -1,3 +1,4 @@
+'use strict';
 const { authorization_screen } = require('./pre-login');
 const { authorization_success_screen } = require('./auth-success');
 

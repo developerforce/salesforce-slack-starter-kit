@@ -1,4 +1,5 @@
-const appHomeAuhtorizeButtonCallback = async ({ body, ack, client }) => {
+'use strict';
+const appHomeAuthorizeButtonCallback = async ({ body, ack, client }) => {
     try {
         await ack();
     } catch (error) {
@@ -7,4 +8,4 @@ const appHomeAuhtorizeButtonCallback = async ({ body, ack, client }) => {
     }
 };
 
-module.exports = { appHomeAuhtorizeButtonCallback };
+module.exports = { appHomeAuthorizeButtonCallback };

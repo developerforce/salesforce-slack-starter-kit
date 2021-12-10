@@ -1,3 +1,5 @@
+'use strict';
+
 const shortcutsListener = require('./shortcuts');
 const eventsListener = require('./events');
 const actionListener = require('./actions');

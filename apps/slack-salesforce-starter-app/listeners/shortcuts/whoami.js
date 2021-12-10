@@ -1,18 +1,16 @@
-const Salesforce = require('../../salesforcelib/connect');
-const config = require('../../config/config');
+'use strict';
+
 const { whoamiresponse } = require('../../user-interface/modals');
 
-const sf = new Salesforce(config.salesforce);
-
-const whoamiCallback = async ({ shortcut, ack, client }) => {
+const whoamiCallback = async ({ shortcut, ack, client, context }) => {
     try {
         await ack();
-        const conn = await sf.connect();
+        const conn = context.sfconnection;
         const currentuser = await conn.identity();
         // Call the views.open method using one of the built-in WebClients
-        const result = await client.views.open({
+        await client.views.open({
             trigger_id: shortcut.trigger_id,
-            view: whoamiresponse(currentuser.username, sf.config.username)
+            view: whoamiresponse(conn.instanceUrl, currentuser.username)
         });
     } catch (error) {
         // eslint-disable-next-line no-console

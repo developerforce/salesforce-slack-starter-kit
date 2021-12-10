@@ -1,3 +1,5 @@
+'use strict';
+
 const { appHomeOpenedCallback } = require('./app-home-opened');
 
 module.exports.register = (app) => {

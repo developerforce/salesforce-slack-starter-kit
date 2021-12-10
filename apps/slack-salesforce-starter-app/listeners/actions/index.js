@@ -1,5 +1,6 @@
-const { appHomeAuhtorizeButtonCallback } = require('./app-home-authorize-btn');
+'use strict';
+const { appHomeAuthorizeButtonCallback } = require('./app-home-authorize-btn');
 
 module.exports.register = (app) => {
-    app.action('authorize-with-salesforce', appHomeAuhtorizeButtonCallback);
+    app.action('authorize-with-salesforce', appHomeAuthorizeButtonCallback);
 };

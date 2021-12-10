@@ -1,3 +1,5 @@
+'use strict';
+
 const { HomeTab, Blocks } = require('slack-block-builder');
 
 const authorization_success_screen = (username) => {

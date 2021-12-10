@@ -3,6 +3,7 @@ const config = require('./config/config');
 const { registerListeners } = require('./listeners');
 const { registerCustomRoutes } = require('./routes');
 const SlackWebClient = require('./store/bolt-web-client');
+const { authWithSalesforce } = require('./middleware/salesforce-auth');
 
 let logLevel;
 switch (process.env.LOG_LEVEL) {
@@ -34,6 +35,9 @@ registerListeners(app);
 
 // Assign Slack WebClient
 SlackWebClient.client = app.client;
+
+// Call global middleware to fetch Salesforce Authentication details
+app.use(authWithSalesforce);
 
 // Asynchronous function to start the app
 (async () => {

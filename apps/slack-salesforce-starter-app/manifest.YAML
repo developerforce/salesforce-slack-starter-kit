@@ -24,6 +24,7 @@ oauth_config:
       - commands
 settings:
   event_subscriptions:
+    request_url: https://heroku-app.herokuapp.com/slack/events
     bot_events:
       - app_home_opened
   interactivity:
