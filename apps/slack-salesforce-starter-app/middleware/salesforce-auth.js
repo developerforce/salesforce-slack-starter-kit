@@ -24,8 +24,8 @@ const authWithSalesforce = async ({ payload, context, next }) => {
         slackUserId = payload.user;
     }
     try {
-        const connection = await sf.connect();
         let sfAuth = {};
+        let intUserConnection = {};
         let sfUserConnection = {};
         // Cache access and refresh tokens after first query for 10 min
         if (tokenCache.has(slackUserId)) {
@@ -34,8 +34,9 @@ const authWithSalesforce = async ({ payload, context, next }) => {
         } else {
             // Query for Slack Authentication records to see if user has authorized the app
             // as a Integration user
+            intUserConnection = await sf.connect();
             const result = await querySlackAuthentication(
-                connection,
+                intUserConnection,
                 slackUserId
             );
             if (result.records.length === 0) {
@@ -59,12 +60,13 @@ const authWithSalesforce = async ({ payload, context, next }) => {
                 };
                 const sfUserAuth = new SalesforceUserAuth(
                     config.salesforce,
-                    connection.instanceUrl,
+                    intUserConnection.instanceUrl,
                     token
                 );
                 sfUserConnection = await sfUserAuth.connect();
             }
             context.sfconnection = sfUserConnection;
+            connectionCache.set(slackUserId, sfUserConnection);
         }
     } catch (e) {
         console.log(e);
