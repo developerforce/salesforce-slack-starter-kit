@@ -28,7 +28,9 @@ class Salesforce {
             } else {
                 // jwt-bearer flow
                 console.log('Connecting to Salesforce using jwt-bearer flow');
-                this.conn = new jsforce.Connection({version: config.apiVersion});
+                this.conn = new jsforce.Connection({
+                    version: config.apiVersion
+                });
 
                 // Get JWT Token
                 const jwtResponse = await getToken({

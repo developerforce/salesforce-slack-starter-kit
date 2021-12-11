@@ -14,7 +14,7 @@ const tokenCache = new NodeCache({ stdTTL: 600 });
 // Cache to Store connection object per user
 const connectionCache = new NodeCache({ stdTTL: 600 });
 
-const authWithSalesforce = async ({ payload, context, next }) => {
+const authWithSalesforce = async ({ payload, context, next, client }) => {
     let slackUserId;
     // For all events Slack returns the users Id as user.id
     if (payload.user.id) {
