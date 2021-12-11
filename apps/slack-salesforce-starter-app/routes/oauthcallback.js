@@ -1,3 +1,4 @@
+'use strict';
 const jsforce = require('jsforce');
 const config = require('../config/config');
 const url = require('url');
@@ -26,25 +27,30 @@ const fetchOAuthToken = async (req, res) => {
         const result = await conn.authorize(code);
         const currentuser = await conn.identity();
         // Upsert Salesforce and Slack mappings into Salesforce Authentication Object
-        upsert(conn, slack_user.userId, result.id);
-        // Update the views in the Slack App
-        await SlackWebClient.client.views.publish({
-            // Use the user ID associated with the event
-            user_id: slack_user.userId,
-            view: authorization_success_screen(currentuser.username)
-        });
-        // Send success message
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(
-            fs.readFileSync(
-                path.resolve(__dirname, '../routes/oauthsuccess.html')
-            ),
-            'utf-8'
-        );
+        if (slack_user?.userId) {
+            upsert(conn, slack_user.userId, result.id);
+            // Update the views in the Slack App
+            await SlackWebClient.client.views.publish({
+                // Use the user ID associated with the event
+                user_id: slack_user.userId,
+                view: authorization_success_screen(currentuser.username)
+            });
+            // Send success message
+            res.writeHead(200, { 'Content-Type': 'text/html' });
+            res.end(
+                fs.readFileSync(
+                    path.resolve(__dirname, '../routes/oauthsuccess.html')
+                ),
+                'utf-8'
+            );
+        } else {
+            res.writeHead(500);
+            res.end('Missing Slack UserId in context. Failed to connect to Salesforce', 'utf-8');
+        }
     } catch (e) {
         console.log(e);
         res.writeHead(500);
-        res.end(JSON.stringify(e), 'utf-8');
+        res.end('Failed to connect to Salesforce', 'utf-8');
     }
 };
 

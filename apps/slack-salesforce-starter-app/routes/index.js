@@ -1,3 +1,4 @@
+'use strict';
 const { oauthcallback } = require('./oauthcallback');
 
 const registerCustomRoutes = () => {
