@@ -45,7 +45,10 @@ const fetchOAuthToken = async (req, res) => {
             );
         } else {
             res.writeHead(500);
-            res.end('Missing Slack UserId in context. Failed to connect to Salesforce', 'utf-8');
+            res.end(
+                'Missing Slack UserId in context. Failed to connect to Salesforce',
+                'utf-8'
+            );
         }
     } catch (e) {
         console.log(e);
