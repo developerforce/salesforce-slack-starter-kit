@@ -1,6 +1,7 @@
 'use strict';
 
 const jsforce = require('jsforce');
+const config = require('../config/config');
 
 class SalesforceUserAuth {
     constructor(config, instanceUrl, token) {
@@ -20,7 +21,8 @@ class SalesforceUserAuth {
                 },
                 instanceUrl: this.instanceUrl,
                 accessToken: this.token.accessToken,
-                refreshToken: this.token.refreshToken
+                refreshToken: this.token.refreshToken,
+                version: config.apiVersion
             });
             await this.conn.oauth2.refreshToken(this.token.refreshToken);
             return this.conn;

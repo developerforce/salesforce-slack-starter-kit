@@ -2,6 +2,7 @@
 
 const jsforce = require('jsforce');
 const { getToken } = require('sf-jwt-token');
+const config = require('../config/config');
 
 class Salesforce {
     constructor(config) {
@@ -16,7 +17,8 @@ class Salesforce {
                     'Connecting to Salesforce using username-password flow'
                 );
                 this.conn = new jsforce.Connection({
-                    loginUrl: this.config.loginUrl
+                    loginUrl: this.config.loginUrl,
+                    version: apiVersion
                 });
 
                 await this.conn.login(
@@ -26,7 +28,7 @@ class Salesforce {
             } else {
                 // jwt-bearer flow
                 console.log('Connecting to Salesforce using jwt-bearer flow');
-                this.conn = new jsforce.Connection();
+                this.conn = new jsforce.Connection({version: config.apiVersion});
 
                 // Get JWT Token
                 const jwtResponse = await getToken({

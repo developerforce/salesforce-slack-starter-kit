@@ -23,7 +23,10 @@ const slack = {
     appToken: process.env.SLACK_APP_TOKEN
 };
 
+const apiVersion = '53.0';
+
 module.exports = {
     salesforce,
-    slack
+    slack,
+    apiVersion
 };

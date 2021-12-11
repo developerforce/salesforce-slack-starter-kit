@@ -1,4 +1,5 @@
 const jsforce = require('jsforce');
+const config = require('../config/config');
 const url = require('url');
 const slack_user = require('../store/slack-user');
 const fs = require('fs');
@@ -15,7 +16,7 @@ const fetchOAuthToken = async (req, res) => {
         clientSecret: process.env.SF_CLIENT_SECRET,
         redirectUri: process.env.SF_REDIRECT_URL
     });
-    var conn = new jsforce.Connection({ oauth2: oauth2 });
+    var conn = new jsforce.Connection({ oauth2: oauth2, version: config.apiVersion });
     var code = url.parse(req.url, true).query.code;
     try {
         // Authorize to obtain refresh and access tokens
