@@ -37,7 +37,7 @@ You will need the following to deploy this sample app.
 The [`scripts/deploy.js`](./scripts/deploy.js) file is what automates all the deploys and
 integrates them with various configuration values.
 
-You can choose between using:
+You can choose between using for integration user:
 
 1. [OAuth 2.0 JWT Bearer Flow for Server-to-Server Integration](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm&type=5). You will need to specify a dev hub, and the script will create a scratch org for you, in which the needed connected app and certificates will be automatically created.
 1. [Username Password Flow (SOAP API)](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_login.htm). You will need to specify your org's username, password and login URL. No connected app is created.
@@ -114,7 +114,7 @@ Note: the command can fail the first time you execute it because the heroku app 
 
 - For production application change the `SF_LOGIN_URL` from 'https://test.salesforce.com' to `https://login.salesforce.com`
 
-- Generate private key and certificates using open SSL as documented in the Salesforce (docs)[https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm] and change environment variables in Heroku to use new private key and consumer key and client secret obtained from the connected app in Salesforce.
+- Generate private key and certificates using open SSL as documented in the Salesforce (docs)[https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm] and change environment variables in Heroku to use new private key, consumer key and client secret obtained from the connected app in Salesforce.
 
 - Heroku Free Dynos sleep if left ideal. For Production application prefer paid Dynos.
 

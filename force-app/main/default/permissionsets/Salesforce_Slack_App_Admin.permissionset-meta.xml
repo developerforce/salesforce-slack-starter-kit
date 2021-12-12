@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Profile xmlns="http://soap.sforce.com/2006/04/metadata">
-    <custom>false</custom>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <description>Provides access to the Slack Authentication object to manage Slack and Salesforce connection</description>
     <fieldPermissions>
         <editable>true</editable>
         <field>Slack_Authentication__c.Access_Token__c</field>
@@ -11,17 +11,19 @@
         <field>Slack_Authentication__c.User__c</field>
         <readable>true</readable>
     </fieldPermissions>
-    <layoutAssignments>
-        <layout>Slack_Authentication__c-Slack Authentication Layout</layout>
-    </layoutAssignments>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>Salesforce Slack App Admin</label>
     <objectPermissions>
         <allowCreate>true</allowCreate>
         <allowDelete>true</allowDelete>
         <allowEdit>true</allowEdit>
         <allowRead>true</allowRead>
-        <modifyAllRecords>true</modifyAllRecords>
+        <modifyAllRecords>false</modifyAllRecords>
         <object>Slack_Authentication__c</object>
-        <viewAllRecords>true</viewAllRecords>
+        <viewAllRecords>false</viewAllRecords>
     </objectPermissions>
-    <userLicense>Salesforce</userLicense>
-</Profile>
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>ViewEncryptedData</name>
+    </userPermissions>
+</PermissionSet>
