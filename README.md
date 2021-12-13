@@ -30,6 +30,8 @@ You will need to allocate an integration user in Salesforce to manage user mappi
 
 Credentials needed to establish the first-time connection to Salesforce for user mapping between Salesforce and Slack is managed through Heroku environment variables.
 
+You can watch this short [video](https://www.youtube.com/watch?v=x0i7UNuMTAM) to get familar with the app system architecture.
+
 ## Installation
 
 ## Prerequisites
@@ -159,23 +161,29 @@ At this point you should see the Node.js app recieving events from Slack directl
 
 ## How to Test the Salesforce Connection
 
-To test the app, make sure to run the Global Shortcut command `Whoami` that ships with the app as shown in the below screenshot
+1. Authenticate to Salesforce by navigating to app home and clicking on `Authorize with Salesforce` button. 
+
+You will need password of your scratch org. You can generate one using `sfdx force:user:password:generate --targetusername scratchorg`
+
+![Authorize with Salesforce](./docs/images/authorization_screen.png)
+
+2. Once successfully authorized, run the Global Shortcut command `Whoami` that ships with the app as shown in the below screenshot
 
 ![Global shortcut](./docs/images/global_shortcut_who_am_i.png)
 
-Successful connection output
+3. Successful connection output is similar to screenshot below
 
 ![Successful Output](./docs/images/who_am_i_output.png)
 
-Note: the command can fail the first time you execute it because the heroku app may be sleeping.
+Note: the command can fail the first time you execute it if you are using Free Tier of heroku app as dynos sleep if left ideal. Restart the app to resume.
 
 ## Considerations for Production app
 
 - For production application change the `SF_LOGIN_URL` from 'https://test.salesforce.com' to `https://login.salesforce.com`
 
-- Generate private key and certificates using open SSL as documented in the Salesforce (docs)[https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm] and change environment variables in Heroku to use new private key, consumer key and client secret obtained from the connected app in Salesforce.
+- Generate private key and certificates using open SSL as documented in the Salesforce (docs)[https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_auth_key_and_cert.htm] and change environment variables in Heroku to use new `private key`, `consumer key` and `client secret` obtained from the connected app in Salesforce.
 
-- Heroku Free Dynos sleep if left ideal. For Production application prefer paid Dynos.
+- Heroku Free Dynos sleeps if left ideal. For Production application we recommend you look into [other types](https://www.heroku.com/dynos) of Dynos.
 
 ## Troubleshooting
 
