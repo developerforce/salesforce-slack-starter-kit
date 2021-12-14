@@ -4,7 +4,7 @@ const fs = require('fs');
 const sh = require('shelljs');
 
 const { getRandom } = require('./util');
-const { getSelfSignedCertificate } = require('./generateselfsignedcert');
+const { getSelfSignedCertificate } = require('./generate-self-signed-cert');
 
 const log = console.log;
 

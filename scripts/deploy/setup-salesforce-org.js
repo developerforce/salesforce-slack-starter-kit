@@ -6,7 +6,7 @@ const log = console.log;
  * Create a scratch org, push source to it, apply permset, and save user login details
  */
 
-const salesforcescratchorgsetup = () => {
+const salesforceScratchOrgSetup = () => {
     log('');
     log(
         `${chalk.bold('*** Setting up Salesforce App')} ${chalk.dim(
@@ -65,4 +65,4 @@ const salesforcescratchorgsetup = () => {
     log(chalk.green('*** ✔ Done with the Salesforce scratch org setup'));
 };
 
-module.exports = { salesforcescratchorgsetup };
+module.exports = { salesforceScratchOrgSetup };

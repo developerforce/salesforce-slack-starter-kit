@@ -3,13 +3,13 @@
 const sh = require('shelljs');
 const chalk = require('chalk');
 
-const { userInputPrompt } = require('./deploy/getuserinput');
-const { setupherokuapp } = require('./deploy/setupherokuapp');
-const { salesforcescratchorgsetup } = require('./deploy/setupsalesforceorg');
+const { userInputPrompt } = require('./deploy/get-user-input');
+const { setupHerokuApp } = require('./deploy/setup-heroku-app');
+const { salesforceScratchOrgSetup } = require('./deploy/setup-salesforce-org');
 const {
     createCertificate,
     deployConnectedApp
-} = require('./deploy/deployconnectedapp');
+} = require('./deploy/deploy-connected-app');
 
 const log = console.log;
 
@@ -26,7 +26,6 @@ sh.env.CURRENT_BRANCH = sh
     .replace(/\n+$/, '');
 
 sh.env.SF_USERNAME = '';
-sh.env.SF_PASSWORD = '';
 sh.env.SF_LOGIN_URL = '';
 sh.env.ORGID = '';
 sh.env.CONSUMERKEY = '';
@@ -46,16 +45,14 @@ sh.env.SLACK_APP_TOKEN = '';
         await getuserinput();
         log('');
         log('*** Starting the salesforce and heroku app setup ***');
-        if (!sh.env.SF_PASSWORD) {
-            // jwt-bearer flow
-            salesforcescratchorgsetup();
-            log('*** Generating Certificates for Connected App');
-            const resultcert = await createCertificate();
-            log('*** Creating Connected app');
-            await deployConnectedApp(resultcert.pubkey);
-        }
+        // jwt-bearer flow
+        salesforceScratchOrgSetup();
+        log('*** Generating Certificates for Connected App');
+        const resultcert = await createCertificate();
+        log('*** Creating Connected app');
+        await deployConnectedApp(resultcert.pubkey);
         log('*** Create Heroku App with necessary configs');
-        setupherokuapp();
+        setupHerokuApp();
     } catch (err) {
         log(chalk.bold.red(`*** ERROR: ${err}`));
     }
@@ -68,7 +65,6 @@ async function getuserinput() {
     sh.env.SF_DEV_HUB = response.devhub ?? '';
     sh.env.SF_SCRATCH_ORG = response.scratchorg ?? '';
     sh.env.SF_USERNAME = response['sf-username'];
-    sh.env.SF_PASSWORD = response['sf-password'] ?? '';
     sh.env.SF_LOGIN_URL =
         response['sf-login-url'] ?? 'https://test.salesforce.com';
     sh.env.HEROKU_APP_NAME = response['heroku-app'];

@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const fs = require('fs');
 const log = console.log;
 
-const setupherokuapp = () => {
+const setupHerokuApp = () => {
     log('');
     log(
         `${chalk.bold('*** Setting up Heroku app')} ${chalk.dim(
@@ -60,41 +60,27 @@ const setupherokuapp = () => {
     stream.write('SF_REDIRECT_URL=' + sh.env.SF_REDIRECT_URL + '\r\n');
     stream.write('SF_CLIENT_ID=' + sh.env.CONSUMERKEY + '\r\n');
     stream.write('SF_CLIENT_SECRET=' + sh.env.SF_CLIENT_SECRET + '\r\n');
-    if (sh.env.SF_PASSWORD) {
-        // username-password flow
-        stream.write('SF_PASSWORD=' + sh.env.SF_PASSWORD + '\r\n');
-    } else {
-        // jwt-bearer flow
-        stream.write(
-            'PRIVATE_KEY=' +
-                '"' +
-                sh.env.PRIVATE_KEY.replace(/(\r\n|\r|\n)/g, '\\n') +
-                '"'
-        );
-    }
+    stream.write(
+        'PRIVATE_KEY=' +
+            '"' +
+            sh.env.PRIVATE_KEY.replace(/(\r\n|\r|\n)/g, '\\n') +
+            '"'
+    );
     stream.close();
 
     log('*** Pushing app to Heroku');
     log('*** Setting remote configuration parameters');
-    if (!sh.env.SF_PASSWORD) {
-        // jwt-bearer flow
-        sh.exec(
-            `heroku config:set PRIVATE_KEY="${sh.env.PRIVATE_KEY}" -a ${sh.env.HEROKU_APP_NAME}`,
-            { silent: true }
-        );
-    }
+    // jwt-bearer flow
+    sh.exec(
+        `heroku config:set PRIVATE_KEY="${sh.env.PRIVATE_KEY}" -a ${sh.env.HEROKU_APP_NAME}`,
+        { silent: true }
+    );
     sh.exec(
         `heroku config:set APP_BASE=apps/slack-salesforce-starter-app -a ${sh.env.HEROKU_APP_NAME}`
     );
     sh.exec(
         `heroku config:set SF_USERNAME=${sh.env.SF_USERNAME} -a ${sh.env.HEROKU_APP_NAME}`
     );
-    if (sh.env.PASSWORD) {
-        // username-password flow
-        sh.exec(
-            `heroku config:set SF_PASSWORD=${sh.env.SF_PASSWORD} -a ${sh.env.HEROKU_APP_NAME}`
-        );
-    }
     sh.exec(
         `heroku config:set SF_LOGIN_URL=${sh.env.SF_LOGIN_URL} -a ${sh.env.HEROKU_APP_NAME}`
     );
@@ -132,4 +118,4 @@ const setupherokuapp = () => {
     );
 };
 
-module.exports = { setupherokuapp };
+module.exports = { setupHerokuApp };

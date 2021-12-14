@@ -8,8 +8,7 @@ const salesforce = {
     redirectUrl: process.env.SF_REDIRECT_URL,
     privateKey: process.env.PRIVATE_KEY,
     loginUrl: process.env.SF_LOGIN_URL,
-    username: process.env.SF_USERNAME,
-    password: process.env.SF_PASSWORD
+    username: process.env.SF_USERNAME
 };
 
 // For Local Development using Socket Mode uncomment socketMode and appToken
