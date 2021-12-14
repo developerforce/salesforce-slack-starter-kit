@@ -12,7 +12,9 @@ class Salesforce {
     async connect() {
         try {
             // jwt-bearer flow
-            console.log('Connecting to Salesforce using integration user using JWT flow');
+            console.log(
+                'Connecting to Salesforce using integration user using JWT flow'
+            );
             this.conn = new jsforce.Connection({
                 version: config.apiVersion
             });
