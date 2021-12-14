@@ -10,9 +10,9 @@ Multiple salesforce org connections to a single Slack workspace are not supporte
 
 # About the Project
 
-This project helps you to create an opinionated minimum scaffold for building a Slack Apps that integrates Salesforce data using [Bolt SDK](https://api.slack.com/tools/bolt) (Node.js version).
+This project helps you to create an opinionated minimum scaffold for building a Slack Apps that integrates Salesforce data using [Bolt SDK](https://api.slack.com/tools/bolt) (Node.js version) and jsforce.
 
-The scaffolded app follows the monorepo approach. It contains a Slack App implemented using Bolt SDK (Node.js) and it also setups the needed Salesforce metadata for managing user mappings and authentication. The scaffold provides configuration files to host and run the app on Heroku.
+The scaffolded app follows the monorepo approach. It contains a Slack App implemented using Bolt SDK (Node.js) and it also setups the needed Salesforce data and metadata for managing users and authentication. The scaffold provides configuration files to host and run the app on Heroku.
 
 Most of Salesforce and Heroku setup tasks are automated to cut down a number of manual configurations required to set up development environments.
 
@@ -20,23 +20,40 @@ We also configure environment variables required for local development, debuggin
 
 # App Architecture
 
+## System Architecture
+
 The image below shows the systems involved in the application.
 
 ![App Architecture](./docs/images/app_architecture.png)
 
-Heroku acts as middleware and hosts the Blot Node.js app that connects to Slack APIs and Salesforce APIs. The Heroku App is stateless and does not persists any Salesforce data.
+Heroku acts as middleware and hosts the Node.js app that connects to Slack APIs (through Bolt) and Salesforce APIs (through jsforce). You can watch this short [video](https://www.youtube.com/watch?v=x0i7UNuMTAM) to get familar with the app system architecture.
 
-You will need to allocate an integration user in Salesforce to manage user mappings between Slack and Salesforce. This mapping is securely stored in the Slack Authentication object in Salesforce.
+The needed configuration for connecting to Slack and Salesforce is securely managed through Heroku environment variables.
 
-Credentials needed to establish the first-time connection to Salesforce for user mapping between Salesforce and Slack are managed through Heroku environment variables.
+## Heroku App <-> Salesforce
 
-You can watch this short [video](https://www.youtube.com/watch?v=x0i7UNuMTAM) to get familar with the app system architecture.
+The scaffolded app uses jsforce and the [OAuth 2.0 Web Server Flow for Web App Integration
+](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_web_server_flow.htm&type=5) flow to connect to Salesforce. This flow is the one recommended to implement user to user integrations. With this flow each individual user needs to authorize. The auth tokens need to be persisted, so the app can perform subsequent requests on behalf of the user.
 
-## Installation
+We store the tokens securely in a Salesforce custom object called Slack_Authentication\_\_c:
+
+Slack_Authentication\_\_c
+├── Access_Token\_\_c
+├── Refresh_Token\_\_c
+├── Slack_User_ID\_\_c
+├── User\_\_c
+
+On each request, the app needs to query this table to guess if the user is already authorized. Although in reality, it first tries to retrieve this info from a cache that we've implemented to improve performance. As at this stage we don't know if the user is authorized yet, we need to use the [OAuth 2.0 JWT Bearer Flow for Server-to-Server Integration](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm&type=5) flow to execute the query.
+
+Once authorized, the app uses the stored auth and refresh tokens to perform requests to Salesforce on behalf oof the authorized user.
+
+## Heroku App <-> Slack
+
+The Heroku App connects to Slack using Bolt.js.
 
 ## Prerequisites
 
-You will need the following to deploy this sample app.
+To run the scaffolding script you will need:
 
 - `git` (download [here](https://git-scm.com/downloads))
 - `node` >= 14 (download [here](https://nodejs.org/en/download/))
@@ -46,36 +63,39 @@ You will need the following to deploy this sample app.
 - Heroku account ([signup](https://signup.heroku.com))
 - `heroku` CLI (download [here](https://devcenter.heroku.com/articles/heroku-cli))
 
-## App Deploy and Set up
-
 ### Configuring Slack App
 
 1. Open [https://api.slack.com/apps/new](https://api.slack.com/apps/new) and choose "From an app manifest"
 2. Choose the workspace you want to install the application to
 3. Copy the contents of [manifest.yml](./apps/slack-salesforce-starter-app/manifest.YAML) into the text box that says `*Paste your manifest code here*` and click _Next_
 4. Review the configuration and click _Create_
-5. Now click _Install to Workspace_ and _Allow_ on the screen that follows. You'll be redirected to the App Configuration dashboard.
+5. Now click _Install App_ on the left menu. Then click the _Install to Workspace_ button and then click on _Allow_
 
-### Script to Set up Salesforce Org and Heroku Environment with code and config
+### Scaffolding Script
 
-The [`scripts/deploy.js`](./scripts/deploy.js) file is what performs the deployments and
-sets configuration values.
+The [`scripts/deploy.js`](./scripts/deploy.js) script scaffolds all the entities needed for the sample app to work. These are the steps followed:
 
-You can choose between one of the options below to establish an initial salesforce connection (server to server connection without user intervention) for managing user mappings between Salesforce and Slack:
+#### Scratch Org Creation:
 
-1. [OAuth 2.0 JWT Bearer Flow for Server-to-Server Integration](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm&type=5). You will need to specify a dev hub, and the script will create a scratch org for you, in which the needed connected app and certificates will be automatically created.
-1. [Username Password Flow (SOAP API)](https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_login.htm). You will need to specify your org's username, password and login URL. No connected app is created.
+The script creates a Salesforce scratch org using the provided dev hub. It pushed the needed source code to it (an object to store authenticated user's tokens), applies a permission set, and saves user login details in environment variables.
 
-Note that the later should only be used for testing purposes as it's considered insecure.
+#### Generation of certificate needed for JWT Bearer flow
 
-The script automates the steps below:
+We generate a certificate to setup the JWT Bearer flow.
 
-- Creation of scratch org for Salesforce development (if using JWT bearer flow).
-- Creation, Deployment and set up of Heroku instance. The environment variables are automatically configured to connect to Salesforce.
-- Setup and deploy Connected Apps for authorization between Salesforce and Slack App hosted on Heroku (if using JWT bearer flow).
-- Deployment of Salesforce metadata for storing user mappings between Salesforce and Slack user
+#### ConnectedApp deployment
 
-Follow the following instructions to set up your development environment:
+Both the JWT Bearer and the Web Server flows need a connected app to be deployed to Salesforce. We use the same connected app for both flows. In the case of JWT bearer flow, a consumer key and a certifiicate is needed. In the case of Web Server flow, a consumer key, consumer secret and a callback URL are needed. All these configuration values are setup in the connected app, that we deploy to Salesforce.
+
+#### Heroku App creation and deployment of Bolt Node.js app
+
+Finally, we create a Heroku app, setup all the needed configuration variables and deploy the Bolt Node.js app.
+
+We also write the configuration variables in a .env file, for local development
+
+#### Running the script
+
+To run the scaffolding script follow these instructions:
 
 ```console
 $ sfdx auth:web:login -d -a DevHub  # Authenticate using your Dev Hub org credentials (only needed if using JWT bearer flow)
@@ -87,15 +107,13 @@ $ cd ..
 $ node scripts/deploy.js
 ```
 
-#### Setting Heroku environment variables for Slack
-
 1. During the set up process, the script will prompt you to enter value for `SLACK_BOT_TOKEN`. To enter this value open your apps configuration page from [this list](https://api.slack.com/apps), click _OAuth & Permissions_ in the left hand menu, then copy the value in _Bot User OAuth Token_ and paste into terminal.
 
-2. The script will prompt you for slack signing secret `SLACK_SIGNING_SECRET`. To enter this value open your apps configuration page from [this list](https://api.slack.com/apps), click _Basic Information_ and scroll to the section _App Credentials_ and click show button and copy the _Signing Secret_ and paste into terminal.
+1. The script will prompt you for slack signing secret `SLACK_SIGNING_SECRET`. To enter this value open your apps configuration page from [this list](https://api.slack.com/apps), click _Basic Information_ and scroll to the section _App Credentials_ and click show button and copy the _Signing Secret_ and paste into terminal.
 
 ### Set Heroku Instance in your Slack App
 
-This is the last step, you will need to enter the corrent Heroku Instance url in Slack App.
+This is the last step, you will need to enter the current Heroku Instance url in Slack App.
 
 - To enter this value open your apps configuration page from [this list](https://api.slack.com/apps), click _App Manifest_. Find the `request_url` fields in the manifest and modify it to replace `heroku-app` with your actual heroku domain name. Note at the end of this step your url should look like `https://<heroku-domain>.herokuapp.com/slack/events`
 
@@ -142,14 +160,7 @@ This is the last step, you will need to enter the corrent Heroku Instance url in
 - Authenticate to Salesforce from the app home page by clicking on `Authorize with Salesforce` button.
 - Once successfully authenticated, perform the steps below:
   1.  Navigate to [config file](apps/slack-salesforce-starter-app/config/config.js), and enable socket mode by uncommenting the socketMode and appToken in config file.
-                `
-                const slack = {
-                  ......
-                  port: process.env.PORT || 3000,
-                  socketMode: true,
-                  appToken: process.env.SLACK_APP_TOKEN
-                };
-                `
+      `const slack = { ...... port: process.env.PORT || 3000, socketMode: true, appToken: process.env.SLACK_APP_TOKEN };`
   2.  Generate an App Level Token in the Slack App by navigating to your Slack app at api.slack.com and scrolling to the section App-Level Tokens
   3.  Populate the .env file with `SLACK_APP_TOKEN` variable obtained in previous step
   4.  cd into apps/slack-salesforce-starter-ap folder `cd apps/slack-salesforce-starter-app`
