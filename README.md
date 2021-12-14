@@ -37,7 +37,8 @@ The scaffolded app uses jsforce and the [OAuth 2.0 Web Server Flow for Web App I
 
 We store the tokens securely in a Salesforce custom object called Slack_Authentication\_\_c:
 
-```Slack_Authentication__c
+```
+Slack_Authentication__c
 ├── Access_Token\_\_c
 ├── Refresh_Token\_\_c
 ├── Slack_User_ID\_\_c
