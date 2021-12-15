@@ -41,3 +41,4 @@ $RECYCLE.BIN/
 
 # Ignore Connected Apps Folder since it has sensitive Info
 connectedApps
+force-app/main/default/connectedApps

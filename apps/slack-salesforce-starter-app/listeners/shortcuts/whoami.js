@@ -1,24 +1,34 @@
-const Salesforce = require("../../salesforcelib/connect");
-const config = require("../../config/config");
-const { whoamiresponse } = require("../../user-interface/modals");
+'use strict';
 
-const sf = new Salesforce(config.salesforce);
+const {
+    whoamiresponse,
+    authorize_sf_prompt
+} = require('../../user-interface/modals');
 
-const whoamiCallback = async ({ shortcut, ack, client }) => {
-  try {
-    await ack();
-    const conn = await sf.connect();
-    //const currentuser = await conn.identity(); TODO: this only works with jwt
-    // Same with conn.instanceUrl
-    // Call the views.open method using one of the built-in WebClients
-    const result = await client.views.open({
-      trigger_id: shortcut.trigger_id,
-      view: whoamiresponse(sf.config.instanceUrl, sf.config.username)
-    });
-  } catch (error) {
-    // eslint-disable-next-line no-console
-    console.error(error);
-  }
+const whoamiCallback = async ({ shortcut, ack, client, context }) => {
+    try {
+        await ack();
+        if (context.hasAuthorized) {
+            const conn = context.sfconnection;
+            const currentuser = await conn.identity();
+            // Call the views.open method using one of the built-in WebClients
+            await client.views.open({
+                trigger_id: shortcut.trigger_id,
+                view: whoamiresponse(conn.instanceUrl, currentuser.username)
+            });
+        } else {
+            // Get BotInfo
+            const botInfo = await client.bots.info({ bot: context.botId });
+            // Open a Modal with message to navigate to App Home for authorization
+            await client.views.open({
+                trigger_id: shortcut.trigger_id,
+                view: authorize_sf_prompt(context.teamId, botInfo.bot.app_id)
+            });
+        }
+    } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error(error);
+    }
 };
 
 module.exports = { whoamiCallback };

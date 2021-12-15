@@ -10,3 +10,6 @@ package.xml
 
 # LWC Jest
 **/__tests__/**
+
+# Connected Apps
+force-app/main/default/connectedApps
