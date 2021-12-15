@@ -10,7 +10,7 @@
     "author": "",
     "license": "CC0 1.0 Universal",
     "dependencies": {
-        "chalk": "^4.1.2",
+        "chalk": "^5.0.0",
         "enquirer": "^2.3.6",
         "haikunator": "^2.1.2",
         "lookpath": "^1.2.2",
