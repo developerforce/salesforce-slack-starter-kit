@@ -33,7 +33,7 @@ The needed configuration for connecting to Slack and Salesforce is securely mana
 ### Heroku App <-> Salesforce
 
 The scaffolded app uses jsforce and the [OAuth 2.0 Web Server Flow for Web App Integration
-](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_web_server_flow.htm&type=5) flow to connect to Salesforce. This flow is the one recommended to implement user to user integrations. With this flow each individual user needs to authorize. The auth tokens need to be persisted, so the app can perform subsequent requests on behalf of the user.
+](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_web_server_flow.htm&type=5) flow to connect to Salesforce. This flow allows Slack users to authorize as a user in Salesforce, so the app can access Salesforce data in the user's context. Each individual user needs to authorize and the access and refresh tokens need to be persisted, so the app can perform subsequent requests on behalf of the authorized user.
 
 We store the tokens securely in a Salesforce custom object called Slack_Authentication\_\_c:
 
@@ -45,9 +45,17 @@ Slack_Authentication__c
 ├── User\_\_c
 ```
 
-On each request, the app needs to query this table to guess if the user is already authorized. Although in reality, it first tries to retrieve this info from a cache that we've implemented to improve performance. As at this stage we don't know if the user is authorized yet, we need to use the [OAuth 2.0 JWT Bearer Flow for Server-to-Server Integration](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm&type=5) flow to perform this first step.
+On each request, the app needs to query this object to find if the user has already authorized. Although in reality, it first tries to retrieve this info from a cache that we've implemented to improve performance. As at this stage we don't know if the user is authorized yet, we need to use the [OAuth 2.0 JWT Bearer Flow for Server-to-Server Integration](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_jwt_flow.htm&type=5) flow to perform this first step.
 
-Once authorized, the app uses the stored auth and refresh tokens to perform requests to Salesforce on behalf oof the authorized user.
+Once authorized, the app uses the stored access and refresh tokens to perform requests to Salesforce in the context of the authorized user.
+
+These are the three possible scenarios for the authorization process:
+
+![Tokens cached](./docs/images/tokens-cached.png)
+
+![Tokens not cached](./docs/images/tokens-not-cached.png)
+
+![User not authorized](./docs/images/not-authorized.png)
 
 ### Heroku App <-> Slack
 
@@ -81,21 +89,21 @@ The [`scripts/deploy.js`](./scripts/deploy.js) script scaffolds all the entities
 
 #### Scratch Org Creation:
 
-The script creates a Salesforce scratch org using the provided dev hub. It pushed the needed source code to it (an object to store authenticated user's tokens), applies a permission set, and saves user login details in environment variables.
+The script creates a Salesforce scratch org using the provided dev hub. The script also deploys the source code and the associated metadata (an object to store authorized user's tokens) to Salesforce. This is the object that helps handle user mappings and authentication. Finally, it assigns a permission set to the user, and saves the user login details in Heroku environment variables. This will be the integration user used in the JWT Bearer flow.
 
 #### Generation of certificate needed for JWT Bearer flow
 
-We generate a certificate to setup the JWT Bearer flow.
+We generate a private key and digital certificate to set up the JWT Bearer flow for authentication.
 
 #### ConnectedApp deployment
 
-Both the JWT Bearer and the Web Server flows need a connected app to be deployed to Salesforce. We use the same connected app for both flows. In the case of JWT bearer flow, a consumer key and a certifiicate is needed. In the case of Web Server flow, a consumer key, consumer secret and a callback URL are needed. All these configuration values are setup in the connected app, that we deploy to Salesforce.
+Both the JWT Bearer and the Web Server flows need a connected app to be deployed to Salesforce. We use the same connected app for both flows. In the case of JWT bearer flow, a consumer key and a digital certificate is needed. In the case of Web Server flow, a consumer key, consumer secret and a callback URL are needed. All these configuration values are setup in the connected app, that we deploy to Salesforce.
 
 #### Heroku App creation and deployment of Bolt Node.js app
 
 Finally, we create a Heroku app, setup all the needed configuration variables and deploy the Bolt Node.js app.
 
-We also write the configuration variables in a .env file, for local development
+We also write the configuration variables to a .env file for local development
 
 #### Running the script
 
