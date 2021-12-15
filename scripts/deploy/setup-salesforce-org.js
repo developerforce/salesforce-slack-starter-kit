@@ -21,7 +21,7 @@ const salesforceScratchOrgSetup = () => {
         )
     );
     // Check error creating scratch org
-    if (!scratchOrgResult.result.orgId) {
+    if (!scratchOrgResult.result || !scratchOrgResult.result.orgId) {
         throw new Error(
             'Scratch org creation failed ' + JSON.stringify(scratchOrgResult)
         );
