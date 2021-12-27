@@ -3,6 +3,7 @@
 const Salesforce = require('../salesforcelib/connect');
 const SalesforceUserAuth = require('../salesforcelib/user-user-oauth');
 const config = require('../config/config');
+const slack_user = require('../store/slack-user');
 const {
     querySlackAuthentication
 } = require('../salesforcelib/query/slack-authentication');
@@ -17,11 +18,14 @@ const connectionCache = new NodeCache({ stdTTL: 600 });
 const authWithSalesforce = async ({ payload, context, next, client }) => {
     let slackUserId;
     // For all events Slack returns the users Id as user.id
-    if (payload.user.id) {
+    if (payload?.user?.id) {
         slackUserId = payload.user.id;
-    } else {
-        // For Home Event a Special Case
+    } else if (payload?.user){
+        // For Home Event payload.user gives the Id
         slackUserId = payload.user;
+    } else {
+        // For Views Submission, we retrieve it from the User singleton set in the Home Page views
+        slackUserId = slack_user.userId;
     }
     try {
         let sfAuth = {};
