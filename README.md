@@ -18,6 +18,10 @@ Most of Salesforce and Heroku setup tasks are automated to cut down a number of 
 
 We also configure environment variables required for local development, debugging, and testing.
 
+The project assumes you want to run the Slack App in the Salesforce user context.
+
+If you want to use a single Salesforce user (Integration user) for performing all data operations in Salesforce from Slack, check out [Salesforce Slack Starter Kit (Server to Server Integration)](https://github.com/developerforce/salesforce-slack-starter-kit-s2s).
+
 ## App Architecture
 
 ### System Architecture
