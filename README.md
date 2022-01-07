@@ -179,9 +179,10 @@ This is the last step, you will need to enter the current Heroku Instance url in
       `const slack = { ...... port: process.env.PORT || 3000, socketMode: true, appToken: process.env.SLACK_APP_TOKEN };`
   2.  Generate an App Level Token in the Slack App by navigating to your Slack app at api.slack.com and scrolling to the section App-Level Tokens
   3.  Populate the .env file with `SLACK_APP_TOKEN` variable obtained in previous step
-  4.  cd into apps/slack-salesforce-starter-ap folder `cd apps/slack-salesforce-starter-app`
-  5.  Run `npm install`
-  6.  Run `node app.js`
+  4. Comment out both `request_url` lines in the slack app's _App Manifest_, and also set the `socket_mode_enabled` to **true**. Do this via the apps configuration page from [this list](https://api.slack.com/apps), click _App Manifest_ menu item for your app.
+  5.  cd into apps/slack-salesforce-starter-ap folder `cd apps/slack-salesforce-starter-app`
+  6.  Run `npm install`
+  7.  Run `node app.js`
 
 At this point you should see the Node.js app recieving events from Slack directly in VSCode terminal.
 
