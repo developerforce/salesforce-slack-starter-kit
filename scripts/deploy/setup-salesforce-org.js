@@ -10,7 +10,7 @@ const salesforceScratchOrgSetup = () => {
     log('');
     log(
         `${chalk.bold('*** Setting up Salesforce App')} ${chalk.dim(
-            '(step 1 of 3)'
+            '(step 1 of 2)'
         )}`
     );
     log('*** Creating scratch org');

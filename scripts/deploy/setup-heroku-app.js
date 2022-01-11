@@ -8,7 +8,7 @@ const setupHerokuApp = () => {
     log('');
     log(
         `${chalk.bold('*** Setting up Heroku app')} ${chalk.dim(
-            '(step 2 of 3)'
+            '(step 2 of 2)'
         )}`
     );
     // Check user is correctly logged into Heroku
