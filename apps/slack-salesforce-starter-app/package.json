@@ -26,7 +26,7 @@
     },
     "homepage": "https://github.com",
     "dependencies": {
-        "@slack/bolt": "^3.8.1",
+        "@slack/bolt": "^3.9.0",
         "dotenv": "^10.0.0",
         "jsforce": "^1.11.0",
         "node-cache": "^5.1.2",
