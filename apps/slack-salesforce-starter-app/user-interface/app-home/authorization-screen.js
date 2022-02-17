@@ -1,7 +1,7 @@
 'use strict';
 const { HomeTab, Actions, Elements, Blocks } = require('slack-block-builder');
 
-const authorization_screen = (authurl) => {
+const authorizationScreen = (authurl) => {
     const homeTab = HomeTab({
         callbackId: 'authorize-salesforce',
         privateMetaData: 'pre-login'
@@ -22,4 +22,4 @@ const authorization_screen = (authurl) => {
     return homeTab.buildToJSON();
 };
 
-module.exports = { authorization_screen };
+module.exports = { authorizationScreen };

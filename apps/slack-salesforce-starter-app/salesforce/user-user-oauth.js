@@ -1,9 +1,8 @@
 'use strict';
 
 const jsforce = require('jsforce');
-const config = require('../config/config');
 
-class SalesforceUserAuth {
+class UserToUserAuth {
     constructor(config, instanceUrl, token) {
         this.config = config;
         this.instanceUrl = instanceUrl;
@@ -17,12 +16,12 @@ class SalesforceUserAuth {
                     loginUrl: this.config.loginUrl,
                     clientId: this.config.clientId,
                     clientSecret: this.config.clientSecret,
-                    redirectUri: this.config.redirectUrl
+                    redirectUri: `${this.config.herokuUrl}/oauthcallback`
                 },
                 instanceUrl: this.instanceUrl,
                 accessToken: this.token.accessToken,
                 refreshToken: this.token.refreshToken,
-                version: config.apiVersion
+                version: this.config.apiVersion
             });
             await this.conn.oauth2.refreshToken(this.token.refreshToken);
             return this.conn;
@@ -34,4 +33,4 @@ class SalesforceUserAuth {
     }
 }
 
-module.exports = SalesforceUserAuth;
+module.exports = UserToUserAuth;

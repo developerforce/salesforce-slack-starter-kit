@@ -2,7 +2,7 @@
 
 const { HomeTab, Blocks } = require('slack-block-builder');
 
-const authorization_success_screen = (username) => {
+const authorizationSuccessScreen = (username) => {
     const homeTab = HomeTab({
         callbackId: 'authorization-salesforce-success',
         privateMetaData: 'authenticated'
@@ -18,4 +18,4 @@ const authorization_success_screen = (username) => {
     return homeTab.buildToJSON();
 };
 
-module.exports = { authorization_success_screen };
+module.exports = { authorizationSuccessScreen };

@@ -1,7 +1,7 @@
 'use strict';
 const { Modal, Blocks } = require('slack-block-builder');
 
-const authorize_sf_prompt = (teamId, appId) => {
+const authorizeSalesforcePrompt = (teamId, appId) => {
     return Modal({ title: 'Salesforce Slack App', close: 'Close' })
         .blocks(
             Blocks.Section({
@@ -11,4 +11,4 @@ const authorize_sf_prompt = (teamId, appId) => {
         .buildToJSON();
 };
 
-module.exports = { authorize_sf_prompt };
+module.exports = { authorizeSalesforcePrompt };

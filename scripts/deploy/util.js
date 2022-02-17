@@ -1,6 +1,5 @@
 const Haikunator = require('haikunator');
 const haikunator = new Haikunator();
-const { lookpath } = require('lookpath');
 const sh = require('shelljs');
 
 const validateAppName = (str) => {
@@ -44,41 +43,15 @@ const getDefaultDevHub = () => {
     return 'DevHub';
 };
 
-const checkForRequiredCommands = async (requiredCmds) => {
-    const hasCommands = requiredCmds.every(async (cmd) => {
-        const exists = await lookpath(cmd);
-        if (!exists)
-            throw new Error(
-                `Command "${cmd}" cannot be found. Please install it or add it to your system's $PATH.`
-            );
-        return exists;
-    });
-
-    return hasCommands;
-};
-
-const isHerokuLoggedIn = () => {
-    try {
-        sh.exec('heroku whoami', { silent: true });
-    } catch (err) {
-        throw new Error(
-            'Heroku CLI not logged in. Please login with `heroku login` and then run the deploy script again.'
-        );
-    }
-    return true;
-};
-
-const getRandom = (length) => {
+const getRandomNumber = (length) => {
     return Math.floor(
         Math.pow(10, length - 1) + Math.random() * 9 * Math.pow(10, length - 1)
     );
 };
 
 module.exports = {
-    checkForRequiredCommands,
     generateUniqueAppName,
     getDefaultDevHub,
-    isHerokuLoggedIn,
     validateAppName,
-    getRandom
+    getRandomNumber
 };

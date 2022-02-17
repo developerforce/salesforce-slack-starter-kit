@@ -1,15 +1,17 @@
 'use strict';
-
 const sh = require('shelljs');
 const chalk = require('chalk');
 
 const { userInputPrompt } = require('./deploy/get-user-input');
 const { setupHerokuApp } = require('./deploy/setup-heroku-app');
-const { salesforceScratchOrgSetup } = require('./deploy/setup-salesforce-org');
+const {
+    createScratchOrg,
+    setupScratchOrg
+} = require('./deploy/setup-salesforce-org');
 const {
     createCertificate,
-    deployConnectedApp
-} = require('./deploy/deploy-connected-app');
+    prepareSfMetadata
+} = require('./deploy/prepare-sf-metadata');
 
 const log = console.log;
 
@@ -33,7 +35,7 @@ sh.env.PRIVATE_KEY = '';
 sh.env.HEROKU_APP_NAME = '';
 sh.env.SLACK_BOT_TOKEN = '';
 sh.env.SLACK_SIGNING_SECRET = '';
-sh.env.SF_REDIRECT_URL = '';
+sh.env.HEROKU_URL = '';
 sh.env.SF_CLIENT_SECRET = '';
 sh.env.SLACK_APP_TOKEN = '';
 
@@ -42,23 +44,21 @@ sh.env.SLACK_APP_TOKEN = '';
         // Run the commands in the rest of this script from the root directory
         sh.cd(sh.env.PROJECT_ROOT_DIR);
         // Ask user to input values needed for the deploy
-        await getuserinput();
+        await getUserInput();
         log('');
-        log('*** Starting the salesforce and heroku app setup ***');
-        // jwt-bearer flow
-        salesforceScratchOrgSetup();
-        log('*** Generating Certificates for Connected App');
+        // Salesforce Setup
+        createScratchOrg();
         const resultcert = await createCertificate();
-        log('*** Creating Connected app');
-        await deployConnectedApp(resultcert.pubkey);
-        log('*** Create Heroku App with necessary configs');
+        await prepareSfMetadata(resultcert.pubkey);
+        setupScratchOrg();
+        // Heroku Setup
         setupHerokuApp();
     } catch (err) {
         log(chalk.bold.red(`*** ERROR: ${err}`));
     }
 })();
 
-async function getuserinput() {
+async function getUserInput() {
     log('');
     log(chalk.bold('*** Please provide the following information: '));
     const response = await userInputPrompt();

@@ -1,5 +1,5 @@
 'use strict';
-const { whoamiresponse } = require('./whoami-response');
-const { authorize_sf_prompt } = require('./authorize-sf-prompt');
+const { whoAmIResponse } = require('./whoami-response');
+const { authorizeSalesforcePrompt } = require('./authorize-sf-prompt');
 
-module.exports = { whoamiresponse, authorize_sf_prompt };
+module.exports = { whoAmIResponse, authorizeSalesforcePrompt };

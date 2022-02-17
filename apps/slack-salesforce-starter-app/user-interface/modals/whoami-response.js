@@ -1,7 +1,7 @@
 'use strict';
 const { Modal, Blocks } = require('slack-block-builder');
 
-const whoamiresponse = (instanceurl, username) => {
+const whoAmIResponse = (instanceurl, username) => {
     return Modal({ title: 'Salesforce Slack App', close: 'Close' })
         .blocks(
             Blocks.Section({
@@ -11,4 +11,4 @@ const whoamiresponse = (instanceurl, username) => {
         .buildToJSON();
 };
 
-module.exports = { whoamiresponse };
+module.exports = { whoAmIResponse };

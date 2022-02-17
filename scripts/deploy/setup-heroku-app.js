@@ -2,7 +2,9 @@
 const sh = require('shelljs');
 const chalk = require('chalk');
 const fs = require('fs');
+const forge = require('node-forge');
 const log = console.log;
+const { getRandomString } = require('./util');
 
 const setupHerokuApp = () => {
     log('');
@@ -36,7 +38,6 @@ const setupHerokuApp = () => {
     );
     sh.env.HEROKU_APP_NAME = appData.name;
     sh.env.HEROKU_URL = appData.web_url;
-    sh.env.SF_REDIRECT_URL = `https://${sh.env.HEROKU_APP_NAME}.herokuapp.com/oauthcallback`;
 
     log('*** Adding Node.js Buildpack');
     sh.exec(
@@ -47,8 +48,13 @@ const setupHerokuApp = () => {
     );
 
     log('*** Writing .env file for local development');
-    fs.writeFileSync('.env', ''); // empty the .env file for fresh write
-    const stream = fs.createWriteStream('.env', { flags: 'a' });
+    fs.writeFileSync('apps/slack-salesforce-starter-app/.env', ''); // empty the .env file for fresh write
+    const stream = fs.createWriteStream(
+        'apps/slack-salesforce-starter-app/.env',
+        {
+            flags: 'a'
+        }
+    );
     // env variables for Slack Auth
     stream.write(
         'SLACK_SIGNING_SECRET=' + sh.env.SLACK_SIGNING_SECRET + '\r\n'
@@ -57,7 +63,7 @@ const setupHerokuApp = () => {
     // env variables for Salesforce Auth
     stream.write('SF_USERNAME=' + sh.env.SF_USERNAME + '\r\n');
     stream.write('SF_LOGIN_URL=' + sh.env.SF_LOGIN_URL + '\r\n');
-    stream.write('SF_REDIRECT_URL=' + sh.env.SF_REDIRECT_URL + '\r\n');
+    stream.write('HEROKU_URL=' + sh.env.HEROKU_URL + '\r\n');
     stream.write('SF_CLIENT_ID=' + sh.env.CONSUMERKEY + '\r\n');
     stream.write('SF_CLIENT_SECRET=' + sh.env.SF_CLIENT_SECRET + '\r\n');
     stream.write(
@@ -70,7 +76,6 @@ const setupHerokuApp = () => {
 
     log('*** Pushing app to Heroku');
     log('*** Setting remote configuration parameters');
-    // jwt-bearer flow
     sh.exec(
         `heroku config:set PRIVATE_KEY="${sh.env.PRIVATE_KEY}" -a ${sh.env.HEROKU_APP_NAME}`,
         { silent: true }
@@ -100,10 +105,7 @@ const setupHerokuApp = () => {
         `heroku config:set SF_CLIENT_SECRET=${sh.env.SF_CLIENT_SECRET} -a ${sh.env.HEROKU_APP_NAME}`,
         { silent: true }
     );
-    sh.exec(
-        `heroku config:set SF_REDIRECT_URL=${sh.env.SF_REDIRECT_URL} -a ${sh.env.HEROKU_APP_NAME}`,
-        { silent: true }
-    );
+    sh.exec({ silent: true });
     sh.cd('../../');
     sh.exec(
         `git push git@heroku.com:${sh.env.HEROKU_APP_NAME}.git ${sh.env.CURRENT_BRANCH}:main`
