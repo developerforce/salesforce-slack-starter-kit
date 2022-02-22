@@ -9,7 +9,7 @@ const authorizationScreen = (authurl) => {
         Blocks.Header({ text: 'Connect to Salesforce' }),
         Blocks.Divider(),
         Blocks.Section({
-            text: 'To get started with the Salesforce Slack Starter app, authorize with Salesforce'
+            text: 'To get started with the Salesforce Slack App, authorize with Salesforce'
         }),
         Actions({ blockId: 'sf-login' }).elements(
             Elements.Button({ text: 'Authorize with Salesforce' })
