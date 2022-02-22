@@ -14,9 +14,10 @@
         "enquirer": "^2.3.6",
         "haikunator": "^2.1.2",
         "lookpath": "^1.2.2",
-        "shelljs": "^0.8.4",
+        "shelljs": "^0.8.5",
         "wrap-ansi": "^8.0.1",
-        "node-forge": "^0.10.0"
+        "node-forge": "^1.2.1",
+        "fs-extra": "^10.0.0"
     },
     "devDependencies": {
         "prettier": "^2.5.1"

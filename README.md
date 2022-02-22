@@ -83,7 +83,7 @@ To be able to run this project you will need:
 
 1. Open [https://api.slack.com/apps/new](https://api.slack.com/apps/new) and choose "From an app manifest"
 2. Choose the workspace you want to install the application to
-3. Copy the contents of [manifest.yml](./apps/slack-salesforce-starter-app/manifest.YAML) into the text box that says `*Paste your manifest code here*` and click _Next_
+3. Copy the contents of [manifest.yml](./apps/salesforce-slack-app/manifest.YAML) into the text box that says `*Paste your manifest code here*` and click _Next_
 4. Review the configuration and click _Create_
 5. Now click _Install App_ on the left menu. Then click the _Install to Workspace_ button and then click on _Allow_
 
@@ -143,7 +143,7 @@ This is the last step, you will need to enter the current Heroku Instance url in
 │   ├── deploy.js         # Automated Deploy script launch file
 │   └── templates         # Template for Connected apps setup
 ├── apps
-     ├── slack-salesforce-starter-app # Node.js Slack app
+     ├── salesforce-slack-app # Node.js Slack app
         ├── config              # Configs for Slack app
         |── listeners           # Modules to listen event for actions,
         |                       # shotcuts and view events in Slack
@@ -166,25 +166,39 @@ This is the last step, you will need to enter the current Heroku Instance url in
 - For Salesforce metadata synchronization use `sfdx force:source:pull` to retrieve and `sfdx force:source:push` to deploy metadata from orgs to local project folder `force-app`
 
 - For the Bolt Node.js app use the steps below:
-  - cd into apps/slack-salesforce-starter-ap folder `cd apps/slack-salesforce-starter-app`
+  - cd into apps/slack-salesforce-starter-ap folder `cd apps/salesforce-slack-app`
   - add git remote to app repo using `heroku git:remote -a <heroku app name>`
   - run `git push heroku main` to push code to Heroku
 
 ## Local Development
 
-- For local Development, first make sure to deploy the app on Heroku as listed in the section above.
-- Authenticate to Salesforce from the app home page by clicking on `Authorize with Salesforce` button.
-- Once successfully authenticated, perform the steps below:
-  1.  Navigate to [config file](apps/slack-salesforce-starter-app/config/config.js), and enable socket mode by uncommenting the socketMode and appToken in config file.
-      `const slack = { ...... port: process.env.PORT || 3000, socketMode: true, appToken: process.env.SLACK_APP_TOKEN };`
-  2.  Generate an App Level Token in the Slack App by navigating to your Slack app at api.slack.com and scrolling to the section App-Level Tokens
-  3.  Populate the .env file with `SLACK_APP_TOKEN` variable obtained in previous step
-  4. Comment out both `request_url` lines in the slack app's _App Manifest_, and also set the `socket_mode_enabled` to **true**. Do this via the apps configuration page from [this list](https://api.slack.com/apps), click _App Manifest_ menu item for your app.
-  5.  cd into apps/slack-salesforce-starter-ap folder `cd apps/slack-salesforce-starter-app`
-  6.  Run `npm install`
-  7.  Run `node app.js`
+1. To use ngrok, first install it downloading the executable or with npm:
 
-At this point you should see the Node.js app recieving events from Slack directly in VSCode terminal.
+```console
+$ npm install ngrok -g
+```
+
+2. Next you’ll have to [sign up](https://dashboard.ngrok.com/get-started/setup).
+3. Once logged in, navigate to “Setup & Installation“ and copy your auth token.
+4. Then set your auth token in your local machine:
+
+```console
+$ ngrok authtoken my_auth_token
+```
+
+5. Run the ngrok tunnel as follows:
+
+```console
+$ ngrok http 3000
+```
+
+6. Copy the ngrok tunnel URL to the following places:
+
+- Your manifest file request URLs
+- The HEROKU_URL environment variable in your .env file
+- The Callback URL for the connected app that’s used for authorization in Salesforce - simply add the ngrok URL in a new line
+
+7. Now you are prepared to run the app locally! In another terminal different from the one in which you’re running ngrok, execute `node app.js` from the project folder. You can then make changes to the code and restart the app as many times as you want.
 
 ## How to Test the Salesforce Connection
 
