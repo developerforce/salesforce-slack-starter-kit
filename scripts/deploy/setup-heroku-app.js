@@ -2,9 +2,7 @@
 const sh = require('shelljs');
 const chalk = require('chalk');
 const fs = require('fs');
-const forge = require('node-forge');
 const log = console.log;
-const { getRandomString } = require('./util');
 
 const setupHerokuApp = () => {
     log('');
@@ -27,7 +25,9 @@ const setupHerokuApp = () => {
     if (appNameCheck.stdout.includes(sh.env.HEROKU_APP_NAME)) {
         throw new Error(`App name already in use: ${sh.env.HEROKU_APP_NAME}`);
     }
-    sh.cd('apps/slack-salesforce-starter-app');
+
+    const appBase = 'apps/slack-salesforce-starter-app';
+    sh.cd(appBase);
 
     log(`*** Creating Heroku app ${chalk.bold(sh.env.HEROKU_APP_NAME)}`);
     const appData = JSON.parse(
@@ -48,13 +48,10 @@ const setupHerokuApp = () => {
     );
 
     log('*** Writing .env file for local development');
-    fs.writeFileSync('apps/slack-salesforce-starter-app/.env', ''); // empty the .env file for fresh write
-    const stream = fs.createWriteStream(
-        'apps/slack-salesforce-starter-app/.env',
-        {
-            flags: 'a'
-        }
-    );
+    fs.writeFileSync(`../../${appBase}/.env`, ''); // empty the .env file for fresh write
+    const stream = fs.createWriteStream(`../../${appBase}/.env`, {
+        flags: 'a'
+    });
     // env variables for Slack Auth
     stream.write(
         'SLACK_SIGNING_SECRET=' + sh.env.SLACK_SIGNING_SECRET + '\r\n'
@@ -80,8 +77,9 @@ const setupHerokuApp = () => {
         `heroku config:set PRIVATE_KEY="${sh.env.PRIVATE_KEY}" -a ${sh.env.HEROKU_APP_NAME}`,
         { silent: true }
     );
+    // Needed by buildpack
     sh.exec(
-        `heroku config:set APP_BASE=apps/slack-salesforce-starter-app -a ${sh.env.HEROKU_APP_NAME}`
+        `heroku config:set APP_BASE=${appBase} -a ${sh.env.HEROKU_APP_NAME}`
     );
     sh.exec(
         `heroku config:set SF_USERNAME=${sh.env.SF_USERNAME} -a ${sh.env.HEROKU_APP_NAME}`

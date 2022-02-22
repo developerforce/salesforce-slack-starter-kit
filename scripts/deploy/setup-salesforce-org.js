@@ -43,7 +43,7 @@ const setupScratchOrg = () => {
         )
     );
 
-    if (!deployResult.result) {
+    if (!deployResult.result || deployResult.result.error) {
         throw new Error(
             'Source deployment failed ' + JSON.stringify(deployResult)
         );
@@ -58,8 +58,8 @@ const setupScratchOrg = () => {
     );
 
     if (!assignPermissionset.result.successes) {
-        throw new Error(
-            'Permission set assignment failed ' +
+        console.error(
+            'Permission set assignment failed - try again later: ' +
                 JSON.stringify(assignPermissionset)
         );
     }
