@@ -1,9 +1,6 @@
 'use strict';
-const { authorization_screen } = require('../../user-interface/app-home');
-const slack_user = require('../../store/slack-user');
-const {
-    authorization_success_screen
-} = require('../../user-interface/app-home');
+const { authorizationScreen } = require('../../user-interface/app-home');
+const { authorizationSuccessScreen } = require('../../user-interface/app-home');
 
 const appHomeOpenedCallback = async ({ client, event, body, context }) => {
     if (event.tab !== 'home') {
@@ -17,8 +14,8 @@ const appHomeOpenedCallback = async ({ client, event, body, context }) => {
             const currentuser = await conn.identity();
             await client.views.publish({
                 // Use the user ID associated with the event
-                user_id: slack_user.userId,
-                view: authorization_success_screen(currentuser.username)
+                user_id: event.user,
+                view: authorizationSuccessScreen(currentuser.username)
             });
         } else {
             // Call views.publish with the built-in client
