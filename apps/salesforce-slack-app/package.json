@@ -1,5 +1,5 @@
 {
-    "name": "slack-salesforce-starter-app",
+    "name": "salesforce-slack-app",
     "version": "1.0.0",
     "description": "This is a sample scaffold to help you get started with Slack app integrated to Salesforce",
     "scripts": {

@@ -83,7 +83,7 @@ To be able to run this project you will need:
 
 1. Open [https://api.slack.com/apps/new](https://api.slack.com/apps/new) and choose "From an app manifest"
 2. Choose the workspace you want to install the application to
-3. Copy the contents of [manifest.yml](./apps/slack-salesforce-starter-app/manifest.YAML) into the text box that says `*Paste your manifest code here*` and click _Next_
+3. Copy the contents of [manifest.yml](./apps/salesforce-slack-app/manifest.YAML) into the text box that says `*Paste your manifest code here*` and click _Next_
 4. Review the configuration and click _Create_
 5. Now click _Install App_ on the left menu. Then click the _Install to Workspace_ button and then click on _Allow_
 
@@ -143,7 +143,7 @@ This is the last step, you will need to enter the current Heroku Instance url in
 │   ├── deploy.js         # Automated Deploy script launch file
 │   └── templates         # Template for Connected apps setup
 ├── apps
-     ├── slack-salesforce-starter-app # Node.js Slack app
+     ├── salesforce-slack-app # Node.js Slack app
         ├── config              # Configs for Slack app
         |── listeners           # Modules to listen event for actions,
         |                       # shotcuts and view events in Slack
@@ -166,7 +166,7 @@ This is the last step, you will need to enter the current Heroku Instance url in
 - For Salesforce metadata synchronization use `sfdx force:source:pull` to retrieve and `sfdx force:source:push` to deploy metadata from orgs to local project folder `force-app`
 
 - For the Bolt Node.js app use the steps below:
-  - cd into apps/slack-salesforce-starter-ap folder `cd apps/slack-salesforce-starter-app`
+  - cd into apps/slack-salesforce-starter-ap folder `cd apps/salesforce-slack-app`
   - add git remote to app repo using `heroku git:remote -a <heroku app name>`
   - run `git push heroku main` to push code to Heroku
 

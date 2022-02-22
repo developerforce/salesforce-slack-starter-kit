@@ -26,7 +26,7 @@ const setupHerokuApp = () => {
         throw new Error(`App name already in use: ${sh.env.HEROKU_APP_NAME}`);
     }
 
-    const appBase = 'apps/slack-salesforce-starter-app';
+    const appBase = 'apps/salesforce-slack-app';
     sh.cd(appBase);
 
     log(`*** Creating Heroku app ${chalk.bold(sh.env.HEROKU_APP_NAME)}`);
