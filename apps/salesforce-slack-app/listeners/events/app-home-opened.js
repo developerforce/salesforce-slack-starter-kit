@@ -1,6 +1,8 @@
 'use strict';
-const { authorizationScreen } = require('../../user-interface/app-home');
-const { authorizationSuccessScreen } = require('../../user-interface/app-home');
+const {
+    authorizationScreen,
+    authorizationSuccessScreen
+} = require('../../user-interface/app-home');
 
 const appHomeOpenedCallback = async ({ client, event, body, context }) => {
     if (event.tab !== 'home') {

@@ -7,7 +7,7 @@ const path = require('path');
 const { upsert } = require('../salesforce/dml/slack-authentication');
 const persistedClient = require('../store/bolt-web-client');
 const { authWithSalesforce } = require('../middleware/salesforce-auth');
-const { authorizationSuccessScreen } = require('../../user-interface/app-home');
+const { authorizationSuccessScreen } = require('../user-interface/app-home');
 
 const fetchOAuthToken = async (req, res) => {
     console.log('Executing user to user OAuth callback');
