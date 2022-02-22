@@ -29,7 +29,7 @@ switch (process.env.LOG_LEVEL) {
 const app = express();
 app.use(
     session({
-        secret: 'supersecretkey',
+        secret: config.salesforce.clientSecret,
         resave: true,
         saveUninitialized: true
     })
