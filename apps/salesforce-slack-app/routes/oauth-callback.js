@@ -40,7 +40,7 @@ const fetchOAuthToken = async (req, res) => {
             // Show something in the app home
             const conn = context.sfconnection;
             const currentuser = await conn.identity();
-            await persistedClient.codeclient.views.publish({
+            await persistedClient.client.views.publish({
                 user_id: slackUserId,
                 view: authorizationSuccessScreen(currentuser.username)
             });
