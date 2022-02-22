@@ -103,7 +103,6 @@ const setupHerokuApp = () => {
         `heroku config:set SF_CLIENT_SECRET=${sh.env.SF_CLIENT_SECRET} -a ${sh.env.HEROKU_APP_NAME}`,
         { silent: true }
     );
-    sh.exec({ silent: true });
     sh.cd('../../');
     sh.exec(
         `git push git@heroku.com:${sh.env.HEROKU_APP_NAME}.git ${sh.env.CURRENT_BRANCH}:main`
