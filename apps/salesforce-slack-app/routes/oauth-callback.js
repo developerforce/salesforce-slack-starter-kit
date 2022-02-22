@@ -7,9 +7,7 @@ const path = require('path');
 const { upsert } = require('../salesforce/dml/slack-authentication');
 const persistedClient = require('../store/bolt-web-client');
 const { authWithSalesforce } = require('../middleware/salesforce-auth');
-const {
-    myTravelRequestsCallback
-} = require('../listeners/utils/home-tab-callbacks');
+const { authorizationSuccessScreen } = require('../../user-interface/app-home');
 
 const fetchOAuthToken = async (req, res) => {
     console.log('Executing user to user OAuth callback');
@@ -39,12 +37,13 @@ const fetchOAuthToken = async (req, res) => {
                 slackUserId: slackUserId
             });
 
-            // Show travel requests in app home
-            await myTravelRequestsCallback(
-                context,
-                persistedClient.client,
-                slackUserId
-            );
+            // Show something in the app home
+            const conn = context.sfconnection;
+            const currentuser = await conn.identity();
+            await persistedClient.codeclient.views.publish({
+                user_id: slackUserId,
+                view: authorizationSuccessScreen(currentuser.username)
+            });
 
             // Send success message
             res.writeHead(200, { 'Content-Type': 'text/html' });
