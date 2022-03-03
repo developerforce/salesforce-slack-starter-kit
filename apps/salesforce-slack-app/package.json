@@ -13,7 +13,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/slackapi/tasks-app.git"
+        "url": "https://github.com/developerforce/salesforce-slack-starter-kit.git"
     },
     "keywords": [
         "slack salesforce",
@@ -22,11 +22,11 @@
     "author": "Salesforce Dev Rel",
     "license": "CC0 1.0 Universal",
     "bugs": {
-        "url": "https://github.com"
+        "url": "https://github.com/developerforce/salesforce-slack-starter-kit"
     },
-    "homepage": "https://github.com",
+    "homepage": "https://github.com/developerforce/salesforce-slack-starter-kit",
     "dependencies": {
-        "@slack/bolt": "^3.9.0",
+        "@slack/bolt": "^3.10.0",
         "crypto-js": "^4.1.1",
         "dotenv": "^16.0.0",
         "express": "^4.17.3",
