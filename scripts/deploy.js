@@ -9,6 +9,9 @@ const {
     setupScratchOrg
 } = require('./deploy/setup-salesforce-org');
 const {
+    setupDefaultDeveloperOrg
+} = require('./deploy/setup-salesforce-de-org');
+const {
     createCertificate,
     prepareSfMetadata
 } = require('./deploy/prepare-sf-metadata');
@@ -38,6 +41,7 @@ sh.env.SLACK_SIGNING_SECRET = '';
 sh.env.HEROKU_URL = '';
 sh.env.SF_CLIENT_SECRET = '';
 sh.env.SLACK_APP_TOKEN = '';
+sh.env.SALESFORCE_ENV_TYPE = '';
 
 (async () => {
     try {
@@ -46,13 +50,17 @@ sh.env.SLACK_APP_TOKEN = '';
         // Ask user to input values needed for the deploy
         await getUserInput();
         log('');
-        // Salesforce Setup
-        createScratchOrg();
+        // Salesforce Org Setup
+        if (sh.env.SALESFORCE_ENV_TYPE == 'Scratch Org') {
+            await createScratchOrg();
+            await setupScratchOrg();
+        } else {
+            await setupDefaultDeveloperOrg();
+        }
         const resultcert = await createCertificate();
         await prepareSfMetadata(resultcert.pubkey);
-        setupScratchOrg();
         // Heroku Setup
-        setupHerokuApp();
+        await setupHerokuApp();
     } catch (err) {
         log(chalk.bold.red(`*** ERROR: ${err}`));
     }
@@ -64,7 +72,6 @@ async function getUserInput() {
     const response = await userInputPrompt();
     sh.env.SF_DEV_HUB = response.devhub ?? '';
     sh.env.SF_SCRATCH_ORG = response.scratchorg ?? '';
-    sh.env.SF_USERNAME = response['sf-username'];
     sh.env.SF_LOGIN_URL =
         response['sf-login-url'] ?? 'https://test.salesforce.com';
     sh.env.HEROKU_APP_NAME = response['heroku-app'];

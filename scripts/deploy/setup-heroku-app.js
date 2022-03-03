@@ -5,7 +5,7 @@ const fs = require('fs');
 const log = console.log;
 const { getRandomString } = require('./util');
 
-const setupHerokuApp = () => {
+const setupHerokuApp = async () => {
     log('');
     log(
         `${chalk.bold('*** Setting up Heroku app')} ${chalk.dim(
