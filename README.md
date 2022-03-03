@@ -134,21 +134,21 @@ node scripts/deploy.js
 
 The [`scripts/deploy.js`](./scripts/deploy.js) automates deployment of Slack app built using Bolt SDK (Node.js version) and Salesforce App. 
 
-These are the highlevel actions peformed by deployment script:
+The high-level overview of actions performed by the deployment script is listed below.
 
-1. Salesforce Org Setup
+1. **Salesforce Org Setup**
 
 The script prompts you to Select the Salesforce Development Environment type. The script creates a scratch org using the provided dev hub if you choose a scratch org-based development. The script then deploys the source code and the associated metadata and assigns the necessary permission set to the user.
 
-2. Generation of certificate needed for JWT Bearer flow OAuth flow
+2. **Generation of certificate needed for JWT Bearer flow OAuth flow**
 
 We generate a private key and digital certificate to set up the JWT Bearer flow for authentication.
 
-3. Salesforce ConnectedApp deployment
+3. **Salesforce ConnectedApp deployment**
 
 Both the JWT Bearer and the Web Server flows need a connected app to be deployed to Salesforce. We use the same connected app for both flows. In the case of JWT bearer flow, a consumer key and a digital certificate is needed. In the case of Web Server flow, a consumer key, consumer secret and a callback URL are needed. All these configuration values are setup in the connected app, that we deploy to Salesforce.
 
-4. Heroku App creation and deployment of Bolt Node.js app:
+4. **Heroku Bolt Node.js app creation and deployment**
 
 Finally, we create a Heroku app, setup all the needed configuration variables and deploy the Bolt Node.js app.
 
