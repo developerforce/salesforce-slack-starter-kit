@@ -9,7 +9,7 @@ const {
     setupScratchOrg
 } = require('./deploy/setup-salesforce-scratch-org');
 const {
-    setupDefaultDeveloperOrg
+    setupDefaultNonScratchOrg
 } = require('./deploy/setup-salesforce-non-scratch-org');
 const {
     createCertificate,
@@ -55,7 +55,7 @@ sh.env.SALESFORCE_ENV_TYPE = '';
             await createScratchOrg();
             await setupScratchOrg();
         } else {
-            await setupDefaultDeveloperOrg();
+            await setupDefaultNonScratchOrg();
         }
         const resultcert = await createCertificate();
         await prepareSfMetadata(resultcert.pubkey);

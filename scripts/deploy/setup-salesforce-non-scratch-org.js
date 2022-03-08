@@ -3,7 +3,7 @@ const chalk = require('chalk');
 const log = console.log;
 
 // Deploy source to developer org and apply permset
-const setupDefaultDeveloperOrg = async () => {
+const setupDefaultNonScratchOrg = async () => {
     log('');
     log(
         `${chalk.bold('*** Setting up Salesforce App')} ${chalk.dim(
@@ -47,4 +47,4 @@ const setupDefaultDeveloperOrg = async () => {
     log(chalk.green('*** ✔ Done with the Salesforce org setup'));
 };
 
-module.exports = { setupDefaultDeveloperOrg };
+module.exports = { setupDefaultNonScratchOrg };
