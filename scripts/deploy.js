@@ -7,10 +7,10 @@ const { setupHerokuApp } = require('./deploy/setup-heroku-app');
 const {
     createScratchOrg,
     setupScratchOrg
-} = require('./deploy/setup-salesforce-org');
+} = require('./deploy/setup-salesforce-scratch-org');
 const {
     setupDefaultDeveloperOrg
-} = require('./deploy/setup-salesforce-de-org');
+} = require('./deploy/setup-salesforce-non-scratch-org');
 const {
     createCertificate,
     prepareSfMetadata
