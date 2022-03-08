@@ -11,7 +11,7 @@ const userInputPrompt = async () => {
     const selectSfOrgType = new Select({
         name: 'sfOrg',
         message: 'Select Salesforce Development Environment',
-        choices: ['Developer Edition Org', 'Scratch Org']
+        choices: ['Non-Scratch Org', 'Scratch Org']
     });
     const selectedSfOrgType = await selectSfOrgType.run();
     sh.env.SALESFORCE_ENV_TYPE = selectedSfOrgType;
