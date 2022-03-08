@@ -37,7 +37,7 @@ We use Heroku environment variables to securely manage necessary configuration v
 ### Heroku App <-> Salesforce
 
 The app uses jsforce and the [OAuth 2.0 Web Server Flow for Web App Integration
-](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_web_server_flow.htm&type=5) flow to connect to Salesforce. 
+](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_web_server_flow.htm&type=5) flow to connect to Salesforce.
 
 Once the user successfully authorizes Slack workspace to Salesforce, we persist the access and refresh tokens. This allows the app to perform subsequent requests to Salesforce as an authorized user.
 
@@ -82,7 +82,7 @@ To be able to run this project you will need:
 
 ## Setup Steps
 
-###  Configuring Slack app at api.slack.com
+### Configuring Slack app at api.slack.com
 
 1. Open [https://api.slack.com/apps/new](https://api.slack.com/apps/new) and choose **From an app manifest**
 2. Choose the workspace you want to install the application to
@@ -95,7 +95,7 @@ To be able to run this project you will need:
 1. Authenticate to your Salesforce org and set as default:
 
 ```
-sfdx auth:web:login --setdefaultusername -a mydevorg 
+sfdx auth:web:login --setdefaultusername -a mydevorg
 ```
 
 2. Login to your Heroku Account
@@ -162,15 +162,15 @@ node scripts/deploy.js
 
 ### Configuring Heroku Domain URL in Slack app Manifest
 
-1. To configure Heroku domain open your apps configuration page from [this list](https://api.slack.com/apps), click _App Manifest_. 
+1. To configure Heroku domain open your apps configuration page from [this list](https://api.slack.com/apps), click _App Manifest_.
 
-2. Find the `request_url` fields in the manifest and modify it to replace `heroku-app` with your actual heroku domain name. 
+2. Find the `request_url` fields in the manifest and modify it to replace `heroku-app` with your actual heroku domain name.
 
-  **At the end of this step your `request_url` should look like `https://<heroku-domain>.herokuapp.com/slack/events`**
+   **At the end of this step your `request_url` should look like `https://<heroku-domain>.herokuapp.com/slack/events`**
 
 ## Deployment Script Actions
 
-The [`scripts/deploy.js`](./scripts/deploy.js) automates deployment of Slack app built using Bolt SDK (Node.js version) and Salesforce App. 
+The [`scripts/deploy.js`](./scripts/deploy.js) automates deployment of Slack app built using Bolt SDK (Node.js version) and Salesforce App.
 
 The high-level overview of actions performed by the deployment script is listed below.
 
