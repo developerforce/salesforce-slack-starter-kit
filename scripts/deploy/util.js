@@ -66,7 +66,25 @@ const getRandomString = (length) => {
     return result;
 };
 
+const assignPermissionset = async () => {
+    // Assign permission set to user
+    const assignPermissionset = JSON.parse(
+        sh.exec(
+            `sfdx force:user:permset:assign --permsetname Salesforce_Slack_App_Admin,Ready_to_Fly -u ${sh.env.SF_USERNAME} --json`,
+            { silent: true }
+        )
+    );
+
+    if (!assignPermissionset.result.successes) {
+        console.error(
+            'Permission set assignment failed - try again later: ' +
+                JSON.stringify(assignPermissionset)
+        );
+    }
+};
+
 module.exports = {
+    assignPermissionset,
     generateUniqueAppName,
     getDefaultDevHub,
     getDefaultOrg,
