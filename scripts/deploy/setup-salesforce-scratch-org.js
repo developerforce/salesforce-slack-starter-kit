@@ -32,6 +32,7 @@ const createScratchOrg = async () => {
     );
     sh.env.SF_USERNAME = userData.result.username;
     sh.env.ORGID = userData.result.id;
+    sh.env.SF_LOGIN_URL = 'https://test.salesforce.com'; // Scratch orgs are sandboxes
 };
 
 // Push source to scratch org and apply permset
