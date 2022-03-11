@@ -3,8 +3,7 @@ const chalk = require('chalk');
 const log = console.log;
 const { assignPermissionset } = require('./util');
 
-// Deploy source to developer org and apply permset
-const setupDefaultNonScratchOrg = async () => {
+const setupNonScratchOrgUserContext = async () => {
     log('');
     log(
         `${chalk.bold('*** Setting up Salesforce App')} ${chalk.dim(
@@ -16,6 +15,10 @@ const setupDefaultNonScratchOrg = async () => {
     );
     sh.env.SF_USERNAME = userData.result.username;
     sh.env.ORGID = userData.result.id;
+};
+
+// Deploy source to non-scratch org and apply permset
+const setupDefaultNonScratchOrg = async () => {
     log('*** Deploying Salesforce metadata');
     const deployResult = JSON.parse(
         sh.exec(
@@ -36,4 +39,4 @@ const setupDefaultNonScratchOrg = async () => {
     log(chalk.green('*** ✔ Done with the Salesforce org setup'));
 };
 
-module.exports = { setupDefaultNonScratchOrg };
+module.exports = { setupDefaultNonScratchOrg, setupNonScratchOrgUserContext };

@@ -1,12 +1,16 @@
 # Salesforce Slack Starter Kit
 
-Before looking into this project, we recommend you look into [Salesforce Slack SDK](https://developer.salesforce.com/blogs/2021/09/introducing-foyer-native-slack-integration-for-the-salesforce-platform) (currently in pilot for ISVs). Be sure to check back Salesforce [developer blog](https://developer.salesforce.com/blogs) regularly for announcements on future milestones of Salesforce Slack SDK. If you want to become part of the pilot, contact your technical account manager.
+Before looking into this project, we recommend you look into [Apex SDK for Slack](https://developer.salesforce.com/blogs/2021/09/introducing-foyer-native-slack-integration-for-the-salesforce-platform) (currently in pilot for ISVs). Be sure to check back Salesforce [developer blog](https://developer.salesforce.com/blogs) regularly for announcements on future milestones of Salesforce Slack SDK. If you want to become part of the pilot, contact your technical account manager.
 
 If you decide to build a custom Slack App integrated with Salesforce from scratch, this project can help you get started.
 
 ## Current Limitation
 
-Multiple salesforce org connections to a single Slack workspace are not supported. Note that Salesforce Slack SDK plans to support this feature.
+1. Do not use this if you are building the Slack app for AppExchange/Slack App Directory
+
+2. Multiple salesforce org connections to a single Slack workspace are not supported.
+
+Note that Apex SDK for Slack plans to support above features.
 
 ## About the Project
 
