@@ -41,7 +41,7 @@ We use Heroku environment variables to securely manage necessary configuration v
 ### Heroku App <-> Salesforce
 
 The app uses jsforce and the [OAuth 2.0 Web Server Flow for Web App Integration
-](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_web_server_flow.htm&type=5) flow to connect to Salesforce. 
+](https://help.salesforce.com/s/articleView?id=sf.remoteaccess_oauth_web_server_flow.htm&type=5) flow to connect to Salesforce.
 
 Once the user successfully authorizes Slack workspace to Salesforce, we persist the access and refresh tokens. This allows the app to perform subsequent requests to Salesforce as an authorized user.
 
@@ -86,7 +86,7 @@ To be able to run this project you will need:
 
 ## Setup Steps
 
-###  Configuring Slack app at api.slack.com
+### Configuring Slack app at api.slack.com
 
 1. Open [https://api.slack.com/apps/new](https://api.slack.com/apps/new) and choose **From an app manifest**
 2. Choose the workspace you want to install the application to
@@ -96,22 +96,22 @@ To be able to run this project you will need:
 
 ### Deploying the app using a Salesforce Non-scratch org and Heroku
 
-1. Authenticate to your Salesforce org and set as default:
-
-```
-sfdx auth:web:login --setdefaultusername -a mydevorg 
-```
-
-2. Login to your Heroku Account
-
-```
-heroku login
-```
-
-3. Clone the salesforce-slack-starter-kit repository
+1. Clone the salesforce-slack-starter-kit repository
 
 ```
 git clone https://github.com/developerforce/salesforce-slack-starter-kit
+```
+
+2. Authenticate to your Salesforce org and set as default:
+
+```
+sfdx auth:web:login --setdefaultusername -a mydevorg
+```
+
+3. Login to your Heroku Account
+
+```
+heroku login
 ```
 
 4. Run Deployment Script
@@ -131,22 +131,22 @@ node scripts/deploy.js
 
 ### Deploying the app using a Salesforce scratch org and Heroku
 
-1. Authenticate to your Salesforce org that has DevHub enabled
+1. Clone the salesforce-slack-starter-kit repository
+
+```
+git clone https://github.com/developerforce/salesforce-slack-starter-kit
+```
+
+2. Authenticate to your Salesforce org that has DevHub enabled
 
 ```
 sfdx auth:web:login --setdefaultdevhubusername -a DevHub
 ```
 
-2. Login to your Heroku Account
+3. Login to your Heroku Account
 
 ```
 heroku login
-```
-
-3. Clone the salesforce-slack-starter-kit repository
-
-```
-git clone https://github.com/developerforce/salesforce-slack-starter-kit
 ```
 
 4. Run Deployment Script
@@ -166,15 +166,15 @@ node scripts/deploy.js
 
 ### Configuring Heroku Domain URL in Slack app Manifest
 
-1. To configure Heroku domain open your apps configuration page from [this list](https://api.slack.com/apps), click _App Manifest_. 
+1. To configure Heroku domain open your apps configuration page from [this list](https://api.slack.com/apps), click _App Manifest_.
 
-2. Find the `request_url` fields in the manifest and modify it to replace `heroku-app` with your actual heroku domain name. 
+2. Find the `request_url` fields in the manifest and modify it to replace `heroku-app` with your actual heroku domain name.
 
-  **At the end of this step your `request_url` should look like `https://<heroku-domain>.herokuapp.com/slack/events`**
+   **At the end of this step your `request_url` should look like `https://<heroku-domain>.herokuapp.com/slack/events`**
 
 ## Deployment Script Actions
 
-The [`scripts/deploy.js`](./scripts/deploy.js) automates deployment of Slack app built using Bolt SDK (Node.js version) and Salesforce App. 
+The [`scripts/deploy.js`](./scripts/deploy.js) automates deployment of Slack app built using Bolt SDK (Node.js version) and Salesforce App.
 
 The high-level overview of actions performed by the deployment script is listed below.
 
