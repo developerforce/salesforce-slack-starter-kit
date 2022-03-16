@@ -123,7 +123,7 @@ const setupHerokuApp = async () => {
     );
     sh.cd('../../');
     sh.exec(
-        `git push git@heroku.com:${sh.env.HEROKU_APP_NAME}.git ${sh.env.CURRENT_BRANCH}:main`
+        `git push https://git.heroku.com/${sh.env.HEROKU_APP_NAME}.git ${sh.env.CURRENT_BRANCH}:main`
     );
 
     log(
