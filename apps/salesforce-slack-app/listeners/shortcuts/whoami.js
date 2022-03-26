@@ -1,7 +1,7 @@
 'use strict';
 
 const {
-    whoamiresponse,
+    whoAmIResponse,
     authorize_sf_prompt
 } = require('../../user-interface/modals');
 
@@ -14,7 +14,7 @@ const whoamiCallback = async ({ shortcut, ack, client, context }) => {
             // Call the views.open method using one of the built-in WebClients
             await client.views.open({
                 trigger_id: shortcut.trigger_id,
-                view: whoamiresponse(conn.instanceUrl, currentuser.username)
+                view: whoAmIResponse(conn.instanceUrl, currentuser.username)
             });
         } else {
             // Get BotInfo
