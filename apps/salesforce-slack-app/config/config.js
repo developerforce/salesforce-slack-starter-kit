@@ -26,6 +26,8 @@ const privateKeyBase64Decoded = Buffer.from(
     'base64'
 ).toString('ascii');
 
+console.log(privateKeyBase64Decoded);
+
 const salesforce = {
     clientId: process.env.SF_CLIENT_ID,
     clientSecret: process.env.SF_CLIENT_SECRET,
