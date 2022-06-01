@@ -53,6 +53,7 @@ const setupHerokuApp = async () => {
     );
 
     log('*** Writing .env file for local development');
+    console.log(sh.env.PRIVATE_KEY);
     // Base64 encode the PRIVATE_KEY
     const privateKeyBase64Encode = Buffer.from(sh.env.PRIVATE_KEY).toString(
         'base64'
