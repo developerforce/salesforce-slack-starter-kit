@@ -1,5 +1,5 @@
 'use strict';
-const appHomeAuthorizeButtonCallback = async ({ body, ack, client }) => {
+const appHomeAuthorizeButtonCallback = async ({ ack }) => {
     // This listener needs to exist for acknowledging the button click
     // but the user is redirected to /oauthstart custom route
     try {

@@ -46,7 +46,7 @@ const promptBasicInfo = async (selectedSfOrgType) => {
             }
         ];
     }
-    return (response = await prompt([
+    return await prompt([
         {
             type: 'input',
             name: 'heroku-app',
@@ -65,7 +65,7 @@ const promptBasicInfo = async (selectedSfOrgType) => {
             message: 'Slack Signing Secret'
         },
         ...sfdxInputs
-    ]));
+    ]);
 };
 
 module.exports = {

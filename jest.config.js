@@ -1,3 +1,4 @@
+/* eslint-env node */
 const { jestConfig } = require("@salesforce/sfdx-lwc-jest/config");
 
 module.exports = {
