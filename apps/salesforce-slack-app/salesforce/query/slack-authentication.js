@@ -5,7 +5,7 @@ const config = require('../../config/config');
 const querySlackAuthentication = async (connection, slackUserId) => {
     try {
         const result = await connection.query(
-            `SELECT Id, Refresh_Token__c, Access_Token__c, Slack_User_ID__c, User__c FROM Slack_Authentication__c WHERE Slack_User_ID__c = \'${slackUserId}\'`
+            `SELECT Id, Refresh_Token__c, Access_Token__c, Slack_User_ID__c, User__c FROM Slack_Authentication__c WHERE Slack_User_ID__c = '${slackUserId}'`
         );
 
         if (result.records.length > 0) {

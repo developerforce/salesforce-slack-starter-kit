@@ -6,7 +6,7 @@ const validateAppName = (str) => {
     if (!str) return 'Please provide a non-empty app name.';
     if (str.length < 3 || str.length > 30)
         return 'App name must be between 3 and 30 characters long.';
-    if (!str.match(/^[a-z]+[a-z0-9\-]+$/))
+    if (!str.match(/^[a-z]+[a-z0-9-]+$/))
         return 'App name must begin with a lowercase letter and contain only lowercase letters, numbers, and dashes.';
 
     return true;
@@ -30,7 +30,9 @@ const getDefaultDevHub = () => {
         })
     );
     if (orgs.result.length === 0) {
-        throw new Error('No default DevHub org configured. Please use "sfdx auth:web:login --setdefaultdevhubusername" and authorize a Salesforce Developer org with DevHub Enabled');
+        throw new Error(
+            'No default DevHub org configured. Please use "sfdx auth:web:login --setdefaultdevhubusername" and authorize a Salesforce Developer org with DevHub Enabled'
+        );
     }
     return orgs.result[0].value;
 };
@@ -42,7 +44,9 @@ const getDefaultOrg = () => {
         })
     );
     if (orgs.result.length === 0) {
-        throw new Error('No default Org configured. Please use "sfdx auth:web:login --setdefaultusername" and authorize a Salesforce Developer org');
+        throw new Error(
+            'No default Org configured. Please use "sfdx auth:web:login --setdefaultusername" and authorize a Salesforce Developer org'
+        );
     }
     return orgs.result[0].value;
 };
