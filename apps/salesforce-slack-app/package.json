@@ -29,7 +29,7 @@
         "@slack/bolt": "^3.11.1",
         "crypto-js": "^4.1.1",
         "dotenv": "^16.0.1",
-        "express": "^4.17.3",
+        "express": "^4.18.1",
         "express-session": "^1.17.2",
         "jsforce": "^1.11.0",
         "node-cache": "^5.1.2",
