@@ -26,7 +26,7 @@
     },
     "homepage": "https://github.com/developerforce/salesforce-slack-starter-kit",
     "dependencies": {
-        "@slack/bolt": "^3.11.1",
+        "@slack/bolt": "^3.13.1",
         "crypto-js": "^4.1.1",
         "dotenv": "^16.0.1",
         "express": "^4.17.3",
